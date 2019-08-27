@@ -1,0 +1,19 @@
+{
+  "Application": {
+    "Url": "http://localhost/fair",
+    "PathBase": "/fair"
+  },
+  "ActiveDirectory": {
+    "UseMockAD": true,
+    "Path": "foobar.com"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Database=fair;Username=cysun;Password=abcd"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}

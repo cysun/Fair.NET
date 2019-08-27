@@ -1,0 +1,3 @@
+﻿DROP TABLE IF EXISTS "Files";
+DROP TABLE IF EXISTS "Users";
+DROP TABLE IF EXISTS "__EFMigrationsHistory";
