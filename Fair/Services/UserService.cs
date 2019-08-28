@@ -24,8 +24,17 @@ namespace Fair.Services
         public ClaimsIdentity Authenticate(string username, string password)
         {
             var user = GetUser(username);
-            if (user == null || !adService.Authenticate(username, password))
+            if (user == null)
+            {
+                logger.LogInformation("User authentication failed for {username}", username);
                 return null;
+            }
+
+            if (!adService.Authenticate(username, password))
+            {
+                logger.LogInformation("AD authentication failed for {uername}", username);
+                return null;
+            }
 
             var claims = user.ToClaims();
             return new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

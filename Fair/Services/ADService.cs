@@ -1,7 +1,6 @@
-﻿using System.DirectoryServices.Protocols;
-using System.Net;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Novell.Directory.Ldap;
 
 namespace Fair.Services
 {
@@ -27,16 +26,20 @@ namespace Fair.Services
             bool authenticated = false;
             try
             {
-                using (var connection = new LdapConnection(domain))
+                using (var connection = new LdapConnection())
                 {
-                    connection.Bind(new NetworkCredential(username, password));
-                    authenticated = true;
-                    logger.LogInformation("AD authentication successful for {username}", username);
+                    connection.Connect(domain, LdapConnection.DEFAULT_PORT);
+                    connection.Bind($"AD\\{username}", password);
+                    if (connection.Bound)
+                    {
+                        authenticated = true;
+                        logger.LogInformation("AD authentication successful for {username}", username);
+                    }
                 }
             }
             catch (LdapException e)
             {
-                logger.LogInformation(e, "AD authentication failed for {username}", username);
+                logger.LogInformation(e, "LDAP Exception for {username}", username);
             }
             return authenticated;
         }
