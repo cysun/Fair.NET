@@ -1,4 +1,5 @@
-﻿using System.DirectoryServices.AccountManagement;
+﻿using System.DirectoryServices.Protocols;
+using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -11,25 +12,32 @@ namespace Fair.Services
 
     public class ADService : IADService
     {
-        private readonly string path;
+        private readonly string domain;
 
         private readonly ILogger logger;
 
         public ADService(IConfiguration config, ILogger<ADService> logger)
         {
-            path = config.GetValue<string>("ActiveDirectory:Path");
+            domain = config.GetValue<string>("ActiveDirectory:Domain");
             this.logger = logger;
         }
 
         public bool Authenticate(string username, string password)
         {
             bool authenticated = false;
-            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, path))
+            try
             {
-                authenticated = pc.ValidateCredentials(username, password);
-                logger.LogInformation("Authenticate AD user {username}: {result}", username, authenticated);
+                using (var connection = new LdapConnection(domain))
+                {
+                    connection.Bind(new NetworkCredential(username, password));
+                    authenticated = true;
+                    logger.LogInformation("AD authentication successful for {username}", username);
+                }
             }
-
+            catch (LdapException e)
+            {
+                logger.LogInformation(e, "AD authentication failed for {username}", username);
+            }
             return authenticated;
         }
     }
