@@ -26,6 +26,8 @@ namespace Fair.Models
 
         public bool IsAdmin { get; set; } = false;
 
+        public bool IsSysAdmin { get; set; } = false;
+
         public List<Claim> ToClaims()
         {
             var claims = new List<Claim>
@@ -37,6 +39,7 @@ namespace Fair.Models
                 new Claim(ClaimTypes.Email, Email)
             };
             if (IsAdmin) claims.Add(new Claim("IsAdmin", "true"));
+            if (IsSysAdmin) claims.Add(new Claim("IsSysAdmin", "true"));
 
             return claims;
         }
