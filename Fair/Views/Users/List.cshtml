@@ -1,0 +1,38 @@
+﻿@model List<User>
+
+@{
+  ViewData["Title"] = "Users";
+}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">Users</li>
+  </ol>
+</nav>
+
+<p><a asp-action="Add" class="btn btn-primary">Add User</a></p>
+
+<table class="table table-hover">
+  <thead>
+    <tr><th>Name</th><th class="d-none d-md-table-cell">Email</th></tr>
+  </thead>
+  <tbody>
+    @foreach (var user in Model)
+    {
+      <tr>
+        <td>
+          <a asp-action="View" asp-route-id="@user.UserId">@user.Name</a>
+          @if (user.IsAdmin)
+          {
+            <span class="badge badge-success">Admin</span>
+          }
+          @if (user.IsSysAdmin)
+          {
+            <span class="badge badge-primary">System Admin</span>
+          }
+        </td>
+        <td class="d-none d-md-table-cell">@user.Email</td>
+      </tr>
+    }
+  </tbody>
+</table>

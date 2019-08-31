@@ -39,6 +39,8 @@ CREATE TABLE "Files" (
 CREATE TABLE "Searches" (
     "SearchId" serial NOT NULL,
     "Name" character varying(255) NOT NULL,
+    "StartDate" timestamp without time zone NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+    "CloseDate" timestamp without time zone NULL,
     "DepartmentChairId" integer NOT NULL,
     "CommitteeChairId" integer NOT NULL,
     CONSTRAINT "PK_Searches" PRIMARY KEY ("SearchId"),
@@ -96,5 +98,5 @@ CREATE INDEX "IX_Searches_DepartmentChairId" ON "Searches" ("DepartmentChairId")
 CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20190831035431_InitialSchema', '2.2.4-servicing-10062');
+VALUES ('20190831170242_InitialSchema', '2.2.4-servicing-10062');
 

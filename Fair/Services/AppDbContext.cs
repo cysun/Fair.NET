@@ -21,6 +21,7 @@ namespace Fair.Services
             modelBuilder.Entity<File>().Property(f => f.Timestamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity<Comment>().Property(c => c.Timestamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity<Revision>().HasKey(r => new { r.DocumentId, r.Number });
+            modelBuilder.Entity<Search>().Property(s => s.StartDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity<Search>().HasOne(s => s.DepartmentChair).WithMany().HasForeignKey(s => s.DepartmentChairId);
             modelBuilder.Entity<Search>().HasOne(s => s.CommitteeChair).WithMany().HasForeignKey(s => s.CommitteeChairId);
             modelBuilder.Entity<CommitteeMember>().HasKey(c => new { c.SearchId, c.MemberId });

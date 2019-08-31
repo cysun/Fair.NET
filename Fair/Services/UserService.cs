@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using Fair.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -38,6 +39,11 @@ namespace Fair.Services
 
             var claims = user.ToClaims();
             return new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        public List<User> GetUsers()
+        {
+            return db.Users.OrderBy(u => u.FirstName).ThenBy(u => u.LastName).ToList();
         }
 
         public User GetUser(string username)

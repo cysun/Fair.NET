@@ -35,6 +35,8 @@ namespace Fair
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("IsAuthenticated", policyBuilder => policyBuilder.RequireAuthenticatedUser());
+                options.AddPolicy("IsAdmin", policyBuilder => policyBuilder.RequireClaim("IsAdmin", true.ToString()));
+                options.AddPolicy("IsSysAdmin", policyBuilder => policyBuilder.RequireClaim("IsSysAdmin", true.ToString()));
             });
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -60,6 +62,7 @@ namespace Fair
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<UserService>();
             services.AddScoped<FileService>();
+            services.AddScoped<SearchService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

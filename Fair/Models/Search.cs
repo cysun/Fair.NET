@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,6 +12,9 @@ namespace Fair.Models
         [Required]
         [MaxLength(255)]
         public string Name { get; set; }
+
+        public DateTime StartDate { get; set; } = DateTime.Now;
+        public DateTime? CloseDate { get; set; }
 
         public int DepartmentChairId { get; set; }
         public User DepartmentChair { get; set; }
