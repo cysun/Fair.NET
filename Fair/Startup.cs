@@ -88,6 +88,11 @@ namespace Fair
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "document",
+                    template: "Searches/{searchId}/Documents/{action}/{documentId?}",
+                    defaults: new { controller = "Documents", action = "List" }
+                );
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Account}/{action=Login}/{id?}");
             });

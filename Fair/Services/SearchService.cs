@@ -29,9 +29,19 @@ namespace Fair.Services
                 .Where(s =>
                    s.DepartmentChairId == user.UserId ||
                    s.CommitteeChairId == user.UserId ||
-                   s.CommitteeMembers.Select(m => m.MemberId).Contains(user.UserId))
+                   s.CommitteeMembers.Select(m => m.UserId).Contains(user.UserId))
                 .OrderByDescending(s => s.StartDate).ThenBy(s => s.Name)
                 .ToList();
+        }
+
+        public Search GetSearch(int searchId)
+        {
+            return db.Searches.Where(s => s.SearchId == searchId)
+                .Include(s => s.DepartmentChair)
+                .Include(s => s.CommitteeChair)
+                .Include(s => s.CommitteeMembers).ThenInclude(m => m.User)
+                .Include(s => s.Documents)
+                .SingleOrDefault();
         }
 
         public void AddSearch(Search search)

@@ -32,7 +32,7 @@ else
       @foreach (var search in Model)
       {
         <tr>
-          <td>@search.Name</td>
+          <td><a asp-action="View" asp-route-id="@search.SearchId">@search.Name</a></td>
           <td>@search.StartDate.ToString("d")</td>
         </tr>
       }

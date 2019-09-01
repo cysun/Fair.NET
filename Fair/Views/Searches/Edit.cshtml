@@ -1,13 +1,14 @@
 ﻿@model Search
 
 @{
-  ViewData["Title"] = "New Search";
+  ViewData["Title"] = "Edit Search";
 }
 
 <nav>
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a asp-action="List">Searches</a></li>
-    <li class="breadcrumb-item active">New Search</li>
+    <li class="breadcrumb-item"><a asp-action="View" asp-route-id="@Model.SearchId">@Model.Name</a></li>
+    <li class="breadcrumb-item active">Edit Search</li>
   </ol>
 </nav>
 
@@ -19,19 +20,26 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="departmentChairSearch">Department Chair</label>
-      <input id="departmentChairSearch" class="form-control chair-search" data-target="departmentChairId" required />
-      <input id="departmentChairId" name="departmentChairId" type="hidden" />
+      <input id="departmentChairSearch" class="form-control chair-search" data-target="departmentChairId" value="@Model.DepartmentChair.Name" required />
+      <input id="departmentChairId" name="departmentChairId" type="hidden" value="@Model.DepartmentChairId" />
     </div>
     <div class="form-group col-md-6">
       <label for="committeeChairSearch">Committee Chair</label>
-      <input id="committeeChairSearch" class="form-control chair-search" data-target="committeeChairId" required />
-      <input id="committeeChairId" name="committeeChairId" type="hidden" />
+      <input id="committeeChairSearch" class="form-control chair-search" data-target="committeeChairId" value="@Model.CommitteeChair.Name" required />
+      <input id="committeeChairId" name="committeeChairId" type="hidden" value="@Model.CommitteeChairId" />
     </div>
   </div>
   <div class="form-group">
     <label for="committeeMemberSearch">Committee Members</label>
     <input id="committeeMemberSearch" class="form-control">
   </div>
+  @foreach (var member in Model.CommitteeMembers)
+  {
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="committeeMemberIds" value="@member.UserId" checked />
+      <label class="form-check-label">@member.User.Name</label>
+    </div>
+  }
   <div class="form-row mt-2">
     <a asp-action="List" class="btn btn-secondary">Cancel</a>
     <button class="btn btn-primary ml-2">Save</button>
@@ -85,6 +93,9 @@
           event.preventDefault();
           return false;
         }
+      });
+      $("[type='checkbox']").change(function () {
+        $(this).parent().remove();
       });
     });
   </script>

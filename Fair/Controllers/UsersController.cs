@@ -1,4 +1,5 @@
-﻿using Fair.Models;
+﻿using System.Collections.Generic;
+using Fair.Models;
 using Fair.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,12 @@ namespace Fair.Controllers
             userService.AddUser(user);
             userService.SaveChanges();
             return RedirectToAction(nameof(List));
+        }
+
+        [HttpGet("/api/users/search")]
+        public List<User> Search([FromQuery(Name = "q")]string prefix)
+        {
+            return userService.SearchByPrefix(prefix);
         }
     }
 }

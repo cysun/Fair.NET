@@ -1,0 +1,37 @@
+﻿@model Search
+
+@{
+  ViewData["Title"] = "View Search";
+}
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item active">@Model.Name</li>
+  </ol>
+</nav>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Summary</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="@Context.Request.PathBase/Searches/@Model.SearchId/Documents">Documents (@Model.Documents.Count)</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="@Context.Request.PathBase/Searches/@Model.SearchId/Applications">Applications (0)</a>
+  </li>
+</ul>
+
+<p class="text-right mt-2"><a asp-action="Edit" asp-route-id="@Model.SearchId" class="btn btn-primary">Edit Search</a></p>
+<div class="card">
+  <div class="card-header">Committee</div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">@Model.DepartmentChair.Name  (Department Chair)</li>
+    <li class="list-group-item">@Model.CommitteeChair.Name  (Committee Chair)</li>
+    @foreach (var member in Model.CommitteeMembers)
+    {
+      <li class="list-group-item">@member.User.Name</li>
+    }
+  </ul>
+</div>

@@ -22,7 +22,7 @@ namespace Fair.Models
         public int CommitteeChairId { get; set; }
         public User CommitteeChair { get; set; }
 
-        public List<CommitteeMember> CommitteeMembers { get; set; }
+        public List<CommitteeMember> CommitteeMembers { get; set; } = new List<CommitteeMember>();
 
         public List<Document> Documents { get; set; }
     }
@@ -30,10 +30,18 @@ namespace Fair.Models
     [Table("CommitteeMembers")]
     public class CommitteeMember
     {
+        public CommitteeMember() { }
+
+        public CommitteeMember(int searchId, int userId)
+        {
+            SearchId = searchId;
+            UserId = userId;
+        }
+
         public int SearchId { get; set; }
         public Search Search { get; set; }
 
-        public int MemberId { get; set; }
-        public User Member { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }

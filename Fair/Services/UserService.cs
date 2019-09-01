@@ -56,6 +56,20 @@ namespace Fair.Services
             db.Users.Add(user);
         }
 
+        public List<User> SearchByPrefix(string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix)) return new List<User>();
+
+            prefix = prefix.ToUpper();
+            return db.Users.Where(u =>
+                u.FirstName.ToUpper().StartsWith(prefix) ||
+                u.LastName.ToUpper().StartsWith(prefix) ||
+                u.Username.ToUpper().StartsWith(prefix) ||
+                u.Email.ToUpper().StartsWith(prefix) ||
+                (u.FirstName + " " + u.LastName).ToUpper().StartsWith(prefix)
+            ).ToList();
+        }
+
         public void SaveChanges()
         {
             db.SaveChanges();

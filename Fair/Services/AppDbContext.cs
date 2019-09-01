@@ -24,7 +24,7 @@ namespace Fair.Services
             modelBuilder.Entity<Search>().Property(s => s.StartDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity<Search>().HasOne(s => s.DepartmentChair).WithMany().HasForeignKey(s => s.DepartmentChairId);
             modelBuilder.Entity<Search>().HasOne(s => s.CommitteeChair).WithMany().HasForeignKey(s => s.CommitteeChairId);
-            modelBuilder.Entity<CommitteeMember>().HasKey(c => new { c.SearchId, c.MemberId });
+            modelBuilder.Entity<CommitteeMember>().HasKey(c => new { c.SearchId, c.UserId });
         }
     }
 }

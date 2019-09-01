@@ -50,10 +50,10 @@ CREATE TABLE "Searches" (
 
 CREATE TABLE "CommitteeMembers" (
     "SearchId" integer NOT NULL,
-    "MemberId" integer NOT NULL,
-    CONSTRAINT "PK_CommitteeMembers" PRIMARY KEY ("SearchId", "MemberId"),
-    CONSTRAINT "FK_CommitteeMembers_Users_MemberId" FOREIGN KEY ("MemberId") REFERENCES "Users" ("UserId") ON DELETE CASCADE,
-    CONSTRAINT "FK_CommitteeMembers_Searches_SearchId" FOREIGN KEY ("SearchId") REFERENCES "Searches" ("SearchId") ON DELETE CASCADE
+    "UserId" integer NOT NULL,
+    CONSTRAINT "PK_CommitteeMembers" PRIMARY KEY ("SearchId", "UserId"),
+    CONSTRAINT "FK_CommitteeMembers_Searches_SearchId" FOREIGN KEY ("SearchId") REFERENCES "Searches" ("SearchId") ON DELETE CASCADE,
+    CONSTRAINT "FK_CommitteeMembers_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("UserId") ON DELETE CASCADE
 );
 
 CREATE TABLE "Documents" (
@@ -79,7 +79,7 @@ CREATE TABLE "Revisions" (
 
 CREATE INDEX "IX_Comments_AuthorId" ON "Comments" ("AuthorId");
 
-CREATE INDEX "IX_CommitteeMembers_MemberId" ON "CommitteeMembers" ("MemberId");
+CREATE INDEX "IX_CommitteeMembers_UserId" ON "CommitteeMembers" ("UserId");
 
 CREATE INDEX "IX_Documents_SearchId" ON "Documents" ("SearchId");
 
@@ -98,5 +98,5 @@ CREATE INDEX "IX_Searches_DepartmentChairId" ON "Searches" ("DepartmentChairId")
 CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20190831170242_InitialSchema', '2.2.4-servicing-10062');
+VALUES ('20190901062335_InitialSchema', '2.2.4-servicing-10062');
 
