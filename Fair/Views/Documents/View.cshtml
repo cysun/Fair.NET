@@ -25,6 +25,10 @@
     <div class="card-body">
       @Html.Raw(@revision.Notes)
       <a asp-controller="Files" asp-action="Download" asp-route-id="@revision.FileId" class="card-link">Download</a>
+      @if (int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value) == revision.AuthorId)
+      {
+        <a href="../../Documents/@Model.DocumentId/Revisions/@revision.Number/Edit" class="card-link">Edit</a>
+      }
     </div>
   </div>
 }

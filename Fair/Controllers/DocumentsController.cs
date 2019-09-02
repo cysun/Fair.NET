@@ -97,5 +97,25 @@ namespace Fair.Controllers
 
             return Redirect($"../../View/{documentId}");
         }
+
+        [HttpGet("Searches/{searchId}/Documents/{documentId}/Revisions/{revisionNumber}/Edit")]
+        public IActionResult EditRevision(int searchId, int documentId, int revisionNumber)
+        {
+            var document = documentService.GetDocument(documentId);
+            ViewBag.Document = document;
+            ViewBag.Search = searchService.GetSearch(searchId);
+            return View(document.Revisions[document.Revisions.Count - revisionNumber]);
+        }
+
+        [HttpPost("Searches/{searchId}/Documents/{documentId}/Revisions/{revisionNumber}/Edit")]
+        public IActionResult EditRevision(int searchId, int documentId, int revisionNumber, string notes)
+        {
+            var document = documentService.GetDocument(documentId);
+            var revision = document.Revisions[document.Revisions.Count - revisionNumber];
+            revision.Notes = notes;
+            documentService.SaveChanges();
+
+            return Redirect($"../../../View/{documentId}");
+        }
     }
 }
