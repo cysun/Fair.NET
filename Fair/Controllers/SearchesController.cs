@@ -12,7 +12,6 @@ namespace Fair.Controllers
     public class SearchesController : Controller
     {
         private readonly SearchService searchService;
-
         private readonly ILogger<SearchesController> logger;
 
         public SearchesController(SearchService searchService, ILogger<SearchesController> logger)

@@ -1,0 +1,28 @@
+﻿@model Document
+@{
+  ViewData["Title"] = "View Document";
+  var search = ViewBag.Search;
+}
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.SearchId">@search.Name</a></li>
+    <li class="breadcrumb-item"><a href="../List">Documents</a></li>
+    <li class="breadcrumb-item active">@Model.Name</li>
+  </ol>
+</nav>
+
+@foreach (var revision in Model.Revisions)
+{
+  <div class="card">
+    <div class="card-header">
+      Revision @revision.Number
+      <small class="text-muted float-right">@revision.Author.Name on @revision.Timestamp.ToString("d")</small>
+    </div>
+    <div class="card-body">
+      @Html.Raw(@revision.Notes)
+      <a asp-controller="Files" asp-action="Download" asp-route-id="@revision.FileId" class="card-link">Download</a>
+    </div>
+  </div>
+}

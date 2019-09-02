@@ -14,7 +14,6 @@ namespace Fair.Controllers
     public class AccountController : Controller
     {
         private readonly UserService userService;
-
         private readonly ILogger<AccountController> logger;
 
         public AccountController(UserService userService, ILogger<AccountController> logger)

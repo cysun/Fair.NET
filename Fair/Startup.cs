@@ -62,6 +62,7 @@ namespace Fair
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<UserService>();
             services.AddScoped<FileService>();
+            services.AddScoped<DocumentService>();
             services.AddScoped<SearchService>();
         }
 
@@ -88,9 +89,9 @@ namespace Fair
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "document",
+                    name: "documents",
                     template: "Searches/{searchId}/Documents/{action}/{documentId?}",
-                    defaults: new { controller = "Documents", action = "List" }
+                    defaults: new { controller = "Documents" }
                 );
                 routes.MapRoute(
                     name: "default",

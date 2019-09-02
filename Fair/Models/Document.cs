@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 namespace Fair.Models
@@ -17,12 +18,18 @@ namespace Fair.Models
         [MaxLength(255)]
         public string Name { get; set; }
 
+        public int? LatestRevisionId { get; set; }
+        public Revision LatestRevision { get; set; }
+
+        [InverseProperty("Document")]
         public List<Revision> Revisions { get; set; } = new List<Revision>();
     }
 
     [Table("Revisions")]
     public class Revision
     {
+        public int RevisionId { get; set; }
+
         public int DocumentId { get; set; }
         public Document Document { get; set; }
 
@@ -31,11 +38,12 @@ namespace Fair.Models
         public int AuthorId { get; set; }
         public User Author { get; set; }
 
-        public int? CommentId { get; set; }
-        public Comment Comment { get; set; }
-
         public int FileId { get; set; }
         public File File { get; set; }
+
+        public string Notes { get; set; }
+
+        public DateTime Timestamp { get; set; } = DateTime.Now;
     }
 
     public class File
@@ -59,12 +67,13 @@ namespace Fair.Models
             return new System.IO.MemoryStream(Content, false);
         }
 
-        public static File FromUploadedFile(IFormFile uploadedFile)
+        public static File FromUploadedFile(IFormFile uploadedFile, int ownerId)
         {
             var file = new Models.File
             {
                 Name = System.IO.Path.GetFileName(uploadedFile.FileName),
-                ContentType = uploadedFile.ContentType
+                ContentType = uploadedFile.ContentType,
+                OwnerId = ownerId
             };
 
             using (var memoryStream = new System.IO.MemoryStream())

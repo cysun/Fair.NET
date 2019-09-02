@@ -1,5 +1,5 @@
-﻿DROP TABLE IF EXISTS "Revisions";
-DROP TABLE IF EXISTS "Comments";
+﻿ALTER TABLE IF EXISTS "Documents" DROP CONSTRAINT "FK_Documents_Revisions_LatestRevisionId";
+DROP TABLE IF EXISTS "Revisions";
 DROP TABLE IF EXISTS "Files";
 DROP TABLE IF EXISTS "Documents";
 DROP TABLE IF EXISTS "CommitteeMembers";
