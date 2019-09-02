@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "New Document";
+    var search = ViewBag.Search;
+    var document = ViewBag.Document;
+}
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.SearchId">@search.Name</a></li>
+    <li class="breadcrumb-item"><a href="../../../List">Documents</a></li>
+    <li class="breadcrumb-item"><a href="../..">@document.Name</a></li>
+    <li class="breadcrumb-item active">New Revision</li>
+  </ol>
+</nav>
+
+<form method="post" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="summernote">Notes</label>
+    <textarea id="summernote" name="notes" class="form-control"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="file">File</label>
+    <input id="file" type="file" name="uploadedFile" class="form-control-file" required>
+  </div>
+  <div class="form-row mt-2">
+    <a href="List" class="btn btn-secondary">Cancel</a>
+    <button class="btn btn-primary ml-2">Save</button>
+  </div>
+</form>
+
+@section StyleSheets{
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
+}
+
+@section Scripts{
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
+  <script>
+    $(function () {
+      $("#summernote").summernote({
+        height: 200
+      });
+    });
+  </script>
+}

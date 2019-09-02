@@ -35,7 +35,7 @@ namespace Fair.Controllers
         public IActionResult Add(int searchId)
         {
             ViewBag.Search = searchService.GetSearch(searchId);
-            return View(new Document());
+            return View();
         }
 
         [HttpPost]
@@ -65,6 +65,37 @@ namespace Fair.Controllers
             logger.LogInformation("{username} created document {documentId}", user.Username, document.DocumentId);
 
             return Redirect($"View/{document.DocumentId}");
+        }
+
+        [HttpGet("Searches/{searchId}/Documents/{documentId}/Revisions/Add")]
+        public IActionResult AddRevision(int searchId, int documentId)
+        {
+            ViewBag.Search = searchService.GetSearch(searchId);
+            ViewBag.Document = documentService.GetDocument(documentId);
+            return View();
+        }
+
+        [HttpPost("Searches/{searchId}/Documents/{documentId}/Revisions/Add")]
+        public IActionResult AddRevision(int searchId, int documentId, string notes, IFormFile uploadedFile)
+        {
+            var document = documentService.GetDocument(documentId);
+            var user = Models.User.PrincipalToUser(User);
+            var revision = new Revision
+            {
+                DocumentId = documentId,
+                Number = document.LatestRevision.Number + 1,
+                AuthorId = user.UserId,
+                Notes = notes,
+                File = Models.File.FromUploadedFile(uploadedFile, user.UserId)
+            };
+            document.Revisions.Add(revision);
+            document.LatestRevision = revision;
+            documentService.SaveChanges();
+
+            logger.LogInformation("{username} added revision {revisionNumber} to document {documentId}",
+                user.Username, revision.Number, documentId);
+
+            return Redirect($"../../View/{documentId}");
         }
     }
 }
