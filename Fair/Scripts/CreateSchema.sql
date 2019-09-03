@@ -16,6 +16,14 @@ CREATE TABLE "Users" (
     CONSTRAINT "AK_Users_Username" UNIQUE ("Username")
 );
 
+CREATE TABLE "Departments" (
+    "DepartmentId" serial NOT NULL,
+    "Name" character varying(255) NOT NULL,
+    "ChairId" integer NULL,
+    CONSTRAINT "PK_Departments" PRIMARY KEY ("DepartmentId"),
+    CONSTRAINT "FK_Departments_Users_ChairId" FOREIGN KEY ("ChairId") REFERENCES "Users" ("UserId") ON DELETE RESTRICT
+);
+
 CREATE TABLE "Files" (
     "FileId" serial NOT NULL,
     "Name" text NULL,
@@ -29,6 +37,7 @@ CREATE TABLE "Files" (
 
 CREATE TABLE "Searches" (
     "SearchId" serial NOT NULL,
+    "DepartmentId" integer NOT NULL,
     "Name" character varying(255) NOT NULL,
     "StartDate" timestamp without time zone NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     "CloseDate" timestamp without time zone NULL,
@@ -36,7 +45,8 @@ CREATE TABLE "Searches" (
     "CommitteeChairId" integer NOT NULL,
     CONSTRAINT "PK_Searches" PRIMARY KEY ("SearchId"),
     CONSTRAINT "FK_Searches_Users_CommitteeChairId" FOREIGN KEY ("CommitteeChairId") REFERENCES "Users" ("UserId") ON DELETE CASCADE,
-    CONSTRAINT "FK_Searches_Users_DepartmentChairId" FOREIGN KEY ("DepartmentChairId") REFERENCES "Users" ("UserId") ON DELETE CASCADE
+    CONSTRAINT "FK_Searches_Users_DepartmentChairId" FOREIGN KEY ("DepartmentChairId") REFERENCES "Users" ("UserId") ON DELETE CASCADE,
+    CONSTRAINT "FK_Searches_Departments_DepartmentId" FOREIGN KEY ("DepartmentId") REFERENCES "Departments" ("DepartmentId") ON DELETE CASCADE
 );
 
 CREATE TABLE "CommitteeMembers" (
@@ -73,6 +83,8 @@ CREATE TABLE "Documents" (
 
 CREATE INDEX "IX_CommitteeMembers_UserId" ON "CommitteeMembers" ("UserId");
 
+CREATE INDEX "IX_Departments_ChairId" ON "Departments" ("ChairId");
+
 CREATE INDEX "IX_Documents_LatestRevisionId" ON "Documents" ("LatestRevisionId");
 
 CREATE INDEX "IX_Documents_SearchId" ON "Documents" ("SearchId");
@@ -87,10 +99,12 @@ CREATE INDEX "IX_Searches_CommitteeChairId" ON "Searches" ("CommitteeChairId");
 
 CREATE INDEX "IX_Searches_DepartmentChairId" ON "Searches" ("DepartmentChairId");
 
+CREATE INDEX "IX_Searches_DepartmentId" ON "Searches" ("DepartmentId");
+
 CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
 
 ALTER TABLE "Revisions" ADD CONSTRAINT "FK_Revisions_Documents_DocumentId" FOREIGN KEY ("DocumentId") REFERENCES "Documents" ("DocumentId") ON DELETE CASCADE;
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20190902011115_InitialSchema', '2.2.4-servicing-10062');
+VALUES ('20190903221222_InitialSchema', '2.2.4-servicing-10062');
 

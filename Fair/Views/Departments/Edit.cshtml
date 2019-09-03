@@ -1,0 +1,56 @@
+﻿@model Department
+
+@{
+  ViewData["Title"] = "Edit Department";
+}
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-action="List">Departments</a></li>
+    <li class="breadcrumb-item active">@Model.Name</li>
+  </ol>
+</nav>
+
+<form method="post">
+  <div class="form-group">
+    <label asp-for="Name"></label>
+    <input asp-for="Name" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label for="chairName">Chair</label>
+    <input id="chairName" class="form-control" data-target="chairId" value="@Model.Chair.Name" required />
+    <input id="chairId" name="chairId" type="hidden" value="@Model.ChairId" />
+  </div>
+  <div class="form-row mt-2">
+    <a asp-action="List" class="btn btn-secondary">Cancel</a>
+    <button class="btn btn-primary ml-2">Save</button>
+  </div>
+</form>
+
+@section Scripts{
+  <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.2.2/dist/latest/bootstrap-autocomplete.min.js"></script>
+  <script>
+    $(function () {
+      $("#chairName").autoComplete({
+        resolverSettings: {
+          url: "@Context.Request.PathBase/api/users/search"
+        },
+        formatResult: function (user) {
+          return {
+            id: user.userId,
+            text: user.name
+          }
+        },
+      });
+      $("#chairName").on("autocomplete.select", function (event, user) {
+        $("#" + $(this).attr("data-target")).val(user.userId);
+      });
+      $("#chairName").keydown(function (event) {
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+    });
+  </script>
+}

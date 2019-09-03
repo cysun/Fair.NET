@@ -1,0 +1,31 @@
+﻿@model List<Department>
+
+@{
+  ViewData["Title"] = "Departments";
+}
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active">Departments</li>
+  </ol>
+</nav>
+
+<p class="text-right"><a asp-action="Add" class="btn btn-primary">New Department</a></p>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Chair</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var department in Model)
+    {
+      <tr>
+        <td><a asp-action="Edit" asp-route-id="@department.DepartmentId">@department.Name</a></td>
+        <td>@department.Chair.Name</td>
+      </tr>
+    }
+  </tbody>
+</table>

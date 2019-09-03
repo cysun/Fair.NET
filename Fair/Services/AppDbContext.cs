@@ -10,6 +10,7 @@ namespace Fair.Services
         public DbSet<User> Users { get; set; }
         public DbSet<File> Files { get; set; }
         public DbSet<Document> Documents { get; set; }
+        public DbSet<Department> Departments { get; set; }
         public DbSet<Search> Searches { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

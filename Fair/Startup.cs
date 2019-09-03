@@ -63,6 +63,7 @@ namespace Fair
             services.AddScoped<UserService>();
             services.AddScoped<FileService>();
             services.AddScoped<DocumentService>();
+            services.AddScoped<DepartmentService>();
             services.AddScoped<SearchService>();
         }
 

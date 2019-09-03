@@ -35,6 +35,9 @@
             @if (User.HasClaim("IsSysAdmin", true.ToString()))
             {
               <li class="nav-item">
+                <a class="nav-link" asp-controller="Departments" asp-action="List">Departments</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" asp-controller="Users" asp-action="List">Users</a>
               </li>
             }
