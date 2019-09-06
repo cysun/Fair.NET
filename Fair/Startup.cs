@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Fair.Models;
+using Fair.Security;
 using Fair.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,9 +34,13 @@ namespace Fair
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("IsAuthenticated", policyBuilder => policyBuilder.RequireAuthenticatedUser());
-                options.AddPolicy("IsAdmin", policyBuilder => policyBuilder.RequireClaim("IsAdmin", true.ToString()));
-                options.AddPolicy("IsSysAdmin", policyBuilder => policyBuilder.RequireClaim("IsSysAdmin", true.ToString()));
+                options.AddPolicy("IsAdmin", policyBuilder => policyBuilder.RequireClaim(FairClaims.IsAdmin.ToString(), true.ToString()));
+                options.AddPolicy("IsSysAdmin", policyBuilder => policyBuilder.RequireClaim(FairClaims.IsSysAdmin.ToString(), true.ToString()));
+                options.AddPolicy("CanReadSearch", policyBuilder => policyBuilder.AddRequirements(new CanReadSearchRequirement()));
+                options.AddPolicy("CanWriteSearch", policyBuilder => policyBuilder.AddRequirements(new CanWriteSearchRequirement()));
             });
+            services.AddSingleton<IAuthorizationHandler, CanReadSearchHandler>();
+            services.AddSingleton<IAuthorizationHandler, CanWriteSearchHandler>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -60,6 +63,7 @@ namespace Fair
                 services.AddSingleton<IADService, ADService>();
 
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<AuthenticationService>();
             services.AddScoped<UserService>();
             services.AddScoped<FileService>();
             services.AddScoped<DocumentService>();

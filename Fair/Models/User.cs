@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
+using Fair.Security;
 
 namespace Fair.Models
 {
@@ -42,8 +43,8 @@ namespace Fair.Models
                 new Claim(ClaimTypes.GivenName, FirstName),
                 new Claim(ClaimTypes.Surname, LastName),
                 new Claim(ClaimTypes.Email, Email),
-                new Claim("IsAdmin", (IsAdmin || IsSysAdmin).ToString()),
-                new Claim("IsSysAdmin", IsSysAdmin.ToString())
+                new Claim(FairClaims.IsAdmin.ToString(), (IsAdmin || IsSysAdmin).ToString()),
+                new Claim(FairClaims.IsSysAdmin.ToString(), IsSysAdmin.ToString())
             };
         }
 
@@ -55,8 +56,8 @@ namespace Fair.Models
             user.FirstName = principal.FindFirst(ClaimTypes.GivenName).Value;
             user.LastName = principal.FindFirst(ClaimTypes.Surname).Value;
             user.Email = principal.FindFirst(ClaimTypes.Email).Value;
-            user.IsAdmin = principal.HasClaim("IsAdmin", true.ToString());
-            user.IsSysAdmin = principal.HasClaim("IsSysAdmin", true.ToString());
+            user.IsAdmin = principal.HasClaim(FairClaims.IsAdmin.ToString(), true.ToString());
+            user.IsSysAdmin = principal.HasClaim(FairClaims.IsSysAdmin.ToString(), true.ToString());
             return user;
         }
     }

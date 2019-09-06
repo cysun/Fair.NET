@@ -13,12 +13,12 @@ namespace Fair.Controllers
     [AllowAnonymous]
     public class AccountController : Controller
     {
-        private readonly UserService userService;
+        private readonly Services.AuthenticationService authenticationService;
         private readonly ILogger<AccountController> logger;
 
-        public AccountController(UserService userService, ILogger<AccountController> logger)
+        public AccountController(Services.AuthenticationService authenticationService, ILogger<AccountController> logger)
         {
-            this.userService = userService;
+            this.authenticationService = authenticationService;
             this.logger = logger;
         }
 
@@ -31,7 +31,7 @@ namespace Fair.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password, string returnUrl)
         {
-            var identity = userService.Authenticate(username, password);
+            var identity = authenticationService.Authenticate(username, password);
             if (identity == null)
                 return RedirectToAction(nameof(Login), new { failed = true });
 
@@ -55,6 +55,12 @@ namespace Fair.Controllers
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(Login));
+        }
+
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            logger.LogWarning("Access to {url} denied for {username}", returnUrl, User.FindFirst(ClaimTypes.Name).Value);
+            return View();
         }
     }
 }

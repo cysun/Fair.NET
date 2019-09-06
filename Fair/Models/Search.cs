@@ -26,10 +26,13 @@ namespace Fair.Models
 
         [Required]
         [MaxLength(255)]
-        public string Name { get; set; }
+        public string Position { get; set; }
 
         public DateTime StartDate { get; set; } = DateTime.Now;
         public DateTime? CloseDate { get; set; }
+
+        [NotMapped]
+        public string Name => $"{Department?.Name} {Position}, {StartDate.Year}-{StartDate.Year + 1}";
 
         public int DepartmentChairId { get; set; }
         public User DepartmentChair { get; set; }

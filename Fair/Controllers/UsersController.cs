@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using Fair.Models;
 using Fair.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -7,7 +8,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Fair.Controllers
 {
-    [Authorize("IsSysAdmin")]
     public class UsersController : Controller
     {
         private readonly UserService userService;
@@ -25,16 +25,21 @@ namespace Fair.Controllers
         }
 
         [HttpGet]
+        [Authorize("IsSysAdmin")]
         public IActionResult Add()
         {
             return View(new User());
         }
 
         [HttpPost]
+        [Authorize("IsSysAdmin")]
         public IActionResult Add(User user)
         {
             userService.AddUser(user);
             userService.SaveChanges();
+
+            logger.LogInformation("{username} added user {name}", User.FindFirst(ClaimTypes.Name).Value, user.Name);
+
             return RedirectToAction(nameof(List));
         }
 

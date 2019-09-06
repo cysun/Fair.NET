@@ -17,7 +17,7 @@ namespace Fair.Services
 
         public List<Search> GetSearches()
         {
-            return db.Searches.OrderByDescending(s => s.StartDate).ThenBy(s => s.Name).ToList();
+            return db.Searches.Include(s => s.Department).OrderByDescending(s => s.StartDate).ThenBy(s => s.Name).ToList();
         }
 
         public List<Search> GetSearches(User user)
@@ -25,18 +25,19 @@ namespace Fair.Services
             if (user.IsAdmin || user.IsSysAdmin)
                 return GetSearches();
 
-            return db.Searches.Include(s => s.CommitteeMembers)
+            return db.Searches.Include(s => s.Department).Include(s => s.CommitteeMembers)
                 .Where(s =>
                    s.DepartmentChairId == user.UserId ||
                    s.CommitteeChairId == user.UserId ||
                    s.CommitteeMembers.Select(m => m.UserId).Contains(user.UserId))
-                .OrderByDescending(s => s.StartDate).ThenBy(s => s.Name)
+                .OrderByDescending(s => s.StartDate)
                 .ToList();
         }
 
         public Search GetSearch(int searchId)
         {
             return db.Searches.Where(s => s.SearchId == searchId)
+                .Include(s => s.Department)
                 .Include(s => s.DepartmentChair)
                 .Include(s => s.CommitteeChair)
                 .Include(s => s.CommitteeMembers).ThenInclude(m => m.User)

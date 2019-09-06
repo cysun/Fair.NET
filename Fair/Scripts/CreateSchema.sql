@@ -38,7 +38,7 @@ CREATE TABLE "Files" (
 CREATE TABLE "Searches" (
     "SearchId" serial NOT NULL,
     "DepartmentId" integer NOT NULL,
-    "Name" character varying(255) NOT NULL,
+    "Position" character varying(255) NOT NULL,
     "StartDate" timestamp without time zone NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     "CloseDate" timestamp without time zone NULL,
     "DepartmentChairId" integer NOT NULL,
@@ -106,5 +106,5 @@ CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
 ALTER TABLE "Revisions" ADD CONSTRAINT "FK_Revisions_Documents_DocumentId" FOREIGN KEY ("DocumentId") REFERENCES "Documents" ("DocumentId") ON DELETE CASCADE;
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20190903221222_InitialSchema', '2.2.4-servicing-10062');
+VALUES ('20190905183335_InitialSchema', '2.2.4-servicing-10062');
 

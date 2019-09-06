@@ -13,9 +13,16 @@
 </nav>
 
 <form method="post">
-  <div class="form-group">
-    <label asp-for="Name"></label>
-    <input asp-for="Name" class="form-control" required>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="departmentSearch">Department</label>
+      <input id="departmentSearch" class="form-control department-search" data-target="departmentId" value="@Model.Department?.Name" required />
+      <input id="departmentId" name="departmentId" type="hidden" value="@Model.DepartmentId" />
+    </div>
+    <div class="form-group col-md-6">
+      <label asp-for="Position"></label>
+      <input asp-for="Position" class="form-control" required>
+    </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
@@ -50,6 +57,20 @@
   <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.2.2/dist/latest/bootstrap-autocomplete.min.js"></script>
   <script>
     $(function () {
+      $("#departmentSearch").autoComplete({
+        resolverSettings: {
+          url: "@Context.Request.PathBase/api/departments/search"
+        },
+        formatResult: function (department) {
+          return {
+            id: department.departmentId,
+            text: department.name
+          }
+        },
+      });
+      $("#departmentSearch").on("autocomplete.select", function (event, department) {
+        $("#" + $(this).attr("data-target")).val(department.departmentId);
+      });
       $(".chair-search").autoComplete({
         resolverSettings: {
           url: "@Context.Request.PathBase/api/users/search"
@@ -88,7 +109,7 @@
         checkRow.append(checkBox).append(checkLabel);
         $(this).parent().after(checkRow);
       });
-      $(".chair-search,#committeeMemberSearch").keydown(function (event) {
+      $("#departmentSearch,.chair-search,#committeeMemberSearch").keydown(function (event) {
         if(event.keyCode == 13) {
           event.preventDefault();
           return false;
