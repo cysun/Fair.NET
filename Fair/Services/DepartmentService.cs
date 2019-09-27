@@ -21,12 +21,12 @@ namespace Fair.Services
 
         public List<Department> GetDepartments(User chair)
         {
-            return db.Departments.Where(d => d.ChairId == chair.UserId).ToList();
+            return db.Departments.Where(d => d.ChairId == chair.Id).ToList();
         }
 
-        public Department GetDepartment(int departmentId)
+        public Department GetDepartment(int id)
         {
-            return db.Departments.Where(d => d.DepartmentId == departmentId).Include(d => d.Chair).SingleOrDefault();
+            return db.Departments.Where(d => d.Id == id).Include(d => d.Chair).SingleOrDefault();
         }
 
         public void AddDepartment(Department department)

@@ -55,13 +55,13 @@
         },
         formatResult: function (department) {
           return {
-            id: department.departmentId,
+            id: department.id,
             text: department.name
           }
         },
       });
       $("#departmentSearch").on("autocomplete.select", function (event, department) {
-        $("#" + $(this).attr("data-target")).val(department.departmentId);
+        $("#" + $(this).attr("data-target")).val(department.id);
       });
       $(".chair-search").autoComplete({
         resolverSettings: {
@@ -69,13 +69,13 @@
         },
         formatResult: function (user) {
           return {
-            id: user.userId,
+            id: user.id,
             text: user.name
           }
         },
       });
       $(".chair-search").on("autocomplete.select", function (event, user) {
-        $("#" + $(this).attr("data-target")).val(user.userId);
+        $("#" + $(this).attr("data-target")).val(user.id);
       });
       $("#committeeMemberSearch").autoComplete({
         resolverSettings: {
@@ -83,18 +83,18 @@
         },
         formatResult: function (user) {
           return {
-            id: user.userId,
+            id: user.id,
             text: user.name
           }
         },
       });
       $("#committeeMemberSearch").on("autocomplete.select", function (event, user) {
         $(this).val("");
-        if (user.userId == $("#departmentChairId").val() || user.userId == $("#committeeChairId").val()) return;
+        if (user.id == $("#departmentChairId").val() || user.id == $("#committeeChairId").val()) return;
         var checkRow = $("<div class='form-check'></div>");
         var checkLabel = $("<label class='form-check-label'>" + user.name + "</label>");
         var checkBox = $("<input class='form-check-input' type='checkbox' name='committeeMemberIds' checked />");
-        checkBox.val(user.userId);
+        checkBox.val(user.id);
         checkBox.change(function () {
           checkRow.remove();
         });

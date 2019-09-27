@@ -13,9 +13,9 @@ namespace Fair.Security
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, CanReadSearchRequirement requirement, Search search)
         {
             if (context.User.HasClaim(FairClaims.IsAdmin.ToString(), true.ToString()) ||
-                context.User.HasClaim(FairClaims.SearchDepartmentChair.ToString(), search.SearchId.ToString()) ||
-                context.User.HasClaim(FairClaims.SearchCommitteeChair.ToString(), search.SearchId.ToString()) ||
-                context.User.HasClaim(FairClaims.SearchCommitteeMember.ToString(), search.SearchId.ToString()))
+                context.User.HasClaim(FairClaims.SearchDepartmentChair.ToString(), search.Id.ToString()) ||
+                context.User.HasClaim(FairClaims.SearchCommitteeChair.ToString(), search.Id.ToString()) ||
+                context.User.HasClaim(FairClaims.SearchCommitteeMember.ToString(), search.Id.ToString()))
                 context.Succeed(requirement);
 
             return Task.CompletedTask;

@@ -37,13 +37,13 @@
         },
         formatResult: function (user) {
           return {
-            id: user.userId,
+            id: user.id,
             text: user.name
           }
         },
       });
       $("#chairName").on("autocomplete.select", function (event, user) {
-        $("#" + $(this).attr("data-target")).val(user.userId);
+        $("#" + $(this).attr("data-target")).val(user.id);
       });
       $("#chairName").keydown(function (event) {
         if(event.keyCode == 13) {

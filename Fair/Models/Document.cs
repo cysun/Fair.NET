@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 namespace Fair.Models
 {
     public class Document
     {
-        public int DocumentId { get; set; }
+        public int Id { get; set; }
 
         public int SearchId { get; set; }
         public Search Search { get; set; }
@@ -29,7 +28,7 @@ namespace Fair.Models
     [Table("Revisions")]
     public class Revision
     {
-        public int RevisionId { get; set; }
+        public int Id { get; set; }
 
         public int DocumentId { get; set; }
         public Document Document { get; set; }
@@ -49,7 +48,7 @@ namespace Fair.Models
 
     public class File
     {
-        public int FileId { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
         public string ContentType { get; set; }

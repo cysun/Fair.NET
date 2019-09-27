@@ -12,10 +12,10 @@ namespace Fair.Services
             this.db = db;
         }
 
-        public Models.File GetFile(int? fileId)
+        public File GetFile(int? id)
         {
-            if (fileId == null) throw new ArgumentNullException();
-            return db.Files.Find(fileId);
+            if (id == null) throw new ArgumentNullException();
+            return db.Files.Find(id);
         }
 
         public void AddFile(File file)

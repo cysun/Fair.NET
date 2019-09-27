@@ -23,7 +23,7 @@
     @foreach (var department in Model)
     {
       <tr>
-        <td><a asp-action="Edit" asp-route-id="@department.DepartmentId">@department.Name</a></td>
+        <td><a asp-action="Edit" asp-route-id="@department.Id">@department.Name</a></td>
         <td>@department.Chair.Name</td>
       </tr>
     }

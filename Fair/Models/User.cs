@@ -8,7 +8,7 @@ namespace Fair.Models
 {
     public class User
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(255)]
@@ -38,7 +38,7 @@ namespace Fair.Models
         {
             return new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, UserId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, Id.ToString()),
                 new Claim(ClaimTypes.Name, Username),
                 new Claim(ClaimTypes.GivenName, FirstName),
                 new Claim(ClaimTypes.Surname, LastName),
@@ -51,7 +51,7 @@ namespace Fair.Models
         public static User PrincipalToUser(ClaimsPrincipal principal)
         {
             var user = new User();
-            user.UserId = int.Parse(principal.FindFirst(ClaimTypes.NameIdentifier).Value);
+            user.Id = int.Parse(principal.FindFirst(ClaimTypes.NameIdentifier).Value);
             user.Username = principal.FindFirst(ClaimTypes.Name).Value;
             user.FirstName = principal.FindFirst(ClaimTypes.GivenName).Value;
             user.LastName = principal.FindFirst(ClaimTypes.Surname).Value;

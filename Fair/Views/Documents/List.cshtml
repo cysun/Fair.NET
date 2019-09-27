@@ -8,14 +8,14 @@
 <nav>
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.SearchId">@search.Name</a></li>
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
     <li class="breadcrumb-item active">Documents</li>
   </ol>
 </nav>
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link" asp-controller="Searches" asp-action="View" asp-route-id="@search.SearchId">Summary</a>
+    <a class="nav-link" asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">Summary</a>
   </li>
   <li class="nav-item">
     <a class="nav-link active" href="#">Documents (@Model.Count)</a>
@@ -39,7 +39,7 @@
     @foreach (var document in Model)
     {
       <tr>
-        <td><a href="View/@document.DocumentId">@document.Name</a></td>
+        <td><a href="View/@document.Id">@document.Name</a></td>
         <td class="d-none d-md-table-cell">@document.LatestRevision.Number</td>
         <td class="d-none d-md-table-cell">@document.LatestRevision.Timestamp.ToString("d")</td>
       </tr>

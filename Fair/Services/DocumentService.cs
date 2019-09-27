@@ -21,9 +21,9 @@ namespace Fair.Services
                 .OrderByDescending(d => d.LatestRevision.Timestamp).ToList();
         }
 
-        public Document GetDocument(int documentId)
+        public Document GetDocument(int id)
         {
-            var document = db.Documents.Where(d => d.DocumentId == documentId)
+            var document = db.Documents.Where(d => d.Id == id)
                 .Include(d => d.LatestRevision).ThenInclude(r => r.Author)
                 .Include(d => d.Revisions).ThenInclude(r => r.Author)
                 .SingleOrDefault();

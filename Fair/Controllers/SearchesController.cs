@@ -65,12 +65,12 @@ namespace Fair.Controllers
             searchService.SaveChanges();
 
             foreach (var committeeMemberId in committeeMemberIds)
-                search.CommitteeMembers.Add(new CommitteeMember(search.SearchId, committeeMemberId));
+                search.CommitteeMembers.Add(new CommitteeMember(search.Id, committeeMemberId));
             searchService.SaveChanges();
 
-            logger.LogInformation("{username} created search {searchId}", User.FindFirst(ClaimTypes.Name).Value, search.SearchId);
+            logger.LogInformation("{username} created search {searchId}", User.FindFirst(ClaimTypes.Name).Value, search.Id);
 
-            return RedirectToAction(nameof(View), new { id = search.SearchId });
+            return RedirectToAction(nameof(View), new { id = search.Id });
         }
 
         [HttpGet]
@@ -89,7 +89,7 @@ namespace Fair.Controllers
             search.CommitteeChairId = update.CommitteeChairId;
             search.CommitteeMembers.RemoveAll(m => !committeeMemberIds.Contains(m.UserId));
             committeeMemberIds.RemoveAll(memberId => search.CommitteeMembers.Select(m => m.UserId).Contains(memberId));
-            search.CommitteeMembers.AddRange(committeeMemberIds.Select(memberId => new CommitteeMember(search.SearchId, memberId)));
+            search.CommitteeMembers.AddRange(committeeMemberIds.Select(memberId => new CommitteeMember(search.Id, memberId)));
 
             var authResult = await authService.AuthorizeAsync(User, search, "CanWriteSearch");
             if (!authResult.Succeeded)
@@ -97,7 +97,7 @@ namespace Fair.Controllers
 
             searchService.SaveChanges();
 
-            logger.LogInformation("{username} updated search {searchId}", User.FindFirst(ClaimTypes.Name).Value, search.SearchId);
+            logger.LogInformation("{username} updated search {searchId}", User.FindFirst(ClaimTypes.Name).Value, search.Id);
 
             return RedirectToAction(nameof(View), new { id });
         }

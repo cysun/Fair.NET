@@ -52,19 +52,19 @@ namespace Fair.Controllers
             var user = Models.User.PrincipalToUser(User);
             var revision = new Revision
             {
-                DocumentId = document.DocumentId,
+                DocumentId = document.Id,
                 Number = 1,
-                AuthorId = user.UserId,
+                AuthorId = user.Id,
                 Notes = notes,
-                File = Models.File.FromUploadedFile(uploadedFile, user.UserId)
+                File = Models.File.FromUploadedFile(uploadedFile, user.Id)
             };
             document.Revisions.Add(revision);
             document.LatestRevision = revision;
             documentService.SaveChanges();
 
-            logger.LogInformation("{username} created document {documentId}", user.Username, document.DocumentId);
+            logger.LogInformation("{username} created document {documentId}", user.Username, document.Id);
 
-            return Redirect($"View/{document.DocumentId}");
+            return Redirect($"View/{document.Id}");
         }
 
         [HttpGet("Searches/{searchId}/Documents/{documentId}/Revisions/Add")]
@@ -84,9 +84,9 @@ namespace Fair.Controllers
             {
                 DocumentId = documentId,
                 Number = document.LatestRevision.Number + 1,
-                AuthorId = user.UserId,
+                AuthorId = user.Id,
                 Notes = notes,
-                File = Models.File.FromUploadedFile(uploadedFile, user.UserId)
+                File = Models.File.FromUploadedFile(uploadedFile, user.Id)
             };
             document.Revisions.Add(revision);
             document.LatestRevision = revision;

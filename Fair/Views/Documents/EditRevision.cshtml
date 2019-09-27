@@ -9,9 +9,9 @@
 <nav>
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.SearchId">@search.Name</a></li>
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
     <li class="breadcrumb-item"><a href="../../../../Documents/List">Documents</a></li>
-    <li class="breadcrumb-item"><a href="../../../View/@document.DocumentId">@document.Name</a></li>
+    <li class="breadcrumb-item"><a href="../../../View/@document.Id">@document.Name</a></li>
     <li class="breadcrumb-item active">Edit Revision @Model.Number</li>
   </ol>
 </nav>
@@ -22,7 +22,7 @@
     <textarea id="summernote" name="notes" class="form-control">@Html.Raw(Model.Notes)</textarea>
   </div>
   <div class="form-row mt-2">
-    <a href="../../../View/@document.DocumentId" class="btn btn-secondary">Cancel</a>
+    <a href="../../../View/@document.Id" class="btn btn-secondary">Cancel</a>
     <button class="btn btn-primary ml-2">Save</button>
   </div>
 </form>

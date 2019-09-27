@@ -7,7 +7,7 @@ namespace Fair.Models
 {
     public class Department
     {
-        public int DepartmentId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(255)]
@@ -19,7 +19,7 @@ namespace Fair.Models
 
     public class Search
     {
-        public int SearchId { get; set; }
+        public int Id { get; set; }
 
         public int DepartmentId { get; set; }
         public Department Department { get; set; }

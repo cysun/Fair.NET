@@ -44,17 +44,17 @@ namespace Fair.Services
 
             var departments = departmentService.GetDepartments(user);
             foreach (var department in departments)
-                claims.Add(new Claim(FairClaims.DepartmentChair.ToString(), department.DepartmentId.ToString()));
+                claims.Add(new Claim(FairClaims.DepartmentChair.ToString(), department.Id.ToString()));
 
             var searches = searchService.GetSearches(user);
             foreach (var search in searches)
             {
-                if (search.DepartmentChairId == user.UserId)
-                    claims.Add(new Claim(FairClaims.DepartmentChair.ToString(), search.SearchId.ToString()));
-                else if (search.CommitteeChairId == user.UserId)
-                    claims.Add(new Claim(FairClaims.SearchDepartmentChair.ToString(), search.SearchId.ToString()));
-                else if (search.CommitteeMembers.Select(m => m.UserId).Contains(user.UserId))
-                    claims.Add(new Claim(FairClaims.SearchCommitteeMember.ToString(), search.SearchId.ToString()));
+                if (search.DepartmentChairId == user.Id)
+                    claims.Add(new Claim(FairClaims.DepartmentChair.ToString(), search.Id.ToString()));
+                else if (search.CommitteeChairId == user.Id)
+                    claims.Add(new Claim(FairClaims.SearchDepartmentChair.ToString(), search.Id.ToString()));
+                else if (search.CommitteeMembers.Select(m => m.UserId).Contains(user.Id))
+                    claims.Add(new Claim(FairClaims.SearchCommitteeMember.ToString(), search.Id.ToString()));
             }
 
             return new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

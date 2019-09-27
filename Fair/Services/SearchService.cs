@@ -28,16 +28,16 @@ namespace Fair.Services
 
             return db.Searches.Include(s => s.Department).Include(s => s.CommitteeMembers)
                 .Where(s =>
-                   s.DepartmentChairId == user.UserId ||
-                   s.CommitteeChairId == user.UserId ||
-                   s.CommitteeMembers.Select(m => m.UserId).Contains(user.UserId))
+                   s.DepartmentChairId == user.Id ||
+                   s.CommitteeChairId == user.Id ||
+                   s.CommitteeMembers.Select(m => m.UserId).Contains(user.Id))
                 .OrderByDescending(s => s.StartDate)
                 .ToList();
         }
 
-        public Search GetSearch(int searchId)
+        public Search GetSearch(int id)
         {
-            return db.Searches.Where(s => s.SearchId == searchId)
+            return db.Searches.Where(s => s.Id == id)
                 .Include(s => s.Department)
                 .Include(s => s.DepartmentChair)
                 .Include(s => s.CommitteeChair)
