@@ -1,5 +1,4 @@
-﻿using Fair.Models;
-using Fair.Security;
+﻿using Fair.Security;
 using Fair.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -7,23 +6,19 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 namespace Fair
 {
     public class Startup
     {
-        private readonly ILogger logger;
-
-        public Startup(IConfiguration configuration, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            this.logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -48,16 +43,15 @@ namespace Fair
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc((options =>
+            services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(new AuthorizeFilter("IsAuthenticated"));
-            })).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            });
 
 
             if (Configuration.GetValue<bool>("ActiveDirectory:UseMockAD"))
             {
                 services.AddSingleton<IADService, MockADService>();
-                logger.LogWarning("Using Mock ADService");
             }
             else
                 services.AddSingleton<IADService, ADService>();
@@ -71,7 +65,7 @@ namespace Fair
             services.AddScoped<SearchService>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -84,23 +78,21 @@ namespace Fair
 
             app.UsePathBase(Configuration.GetValue<string>("Application:PathBase"));
             app.UseStaticFiles();
+            app.UseRouting();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
             app.UseCookiePolicy();
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "documents",
-                    template: "Searches/{searchId}/Documents/{action}/{documentId?}",
-                    defaults: new { controller = "Documents" }
-                );
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Account}/{action=Login}/{id?}");
+                endpoints.MapControllerRoute(name: "documents",
+                    pattern: "Searches/{searchId}/Documents/{action}/{documentId?}",
+                    defaults: new { controller = "Documents" });
+                endpoints.MapControllerRoute("default", "{controller=Account}/{action=Login}/{id?}");
             });
         }
     }

@@ -17,7 +17,8 @@ namespace Fair.Services
 
         public List<Search> GetSearches()
         {
-            return db.Searches.Include(s => s.Department).OrderByDescending(s => s.StartDate).ThenBy(s => s.Name).ToList();
+            return db.Searches.Include(s => s.Department).OrderByDescending(s => s.StartDate)
+                 .AsEnumerable().OrderBy(s => s.Name).ToList();
         }
 
         public List<Search> GetSearches(User user)

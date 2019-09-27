@@ -19,6 +19,7 @@ namespace Fair.Models
         public string Name { get; set; }
 
         public int? LatestRevisionId { get; set; }
+        [ForeignKey("LatestRevisionId")]
         public Revision LatestRevision { get; set; }
 
         [InverseProperty("Document")]
