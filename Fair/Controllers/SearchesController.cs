@@ -7,6 +7,7 @@ using Fair.Security;
 using Fair.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 
 namespace Fair.Controllers
@@ -15,14 +16,17 @@ namespace Fair.Controllers
     {
         private readonly SearchService searchService;
         private readonly DepartmentService departmentService;
+        private readonly ApplicationTemplateService applicationTemplateService;
         private readonly IAuthorizationService authService;
         private readonly ILogger<SearchesController> logger;
 
         public SearchesController(SearchService searchService, DepartmentService departmentService,
-            IAuthorizationService authService, ILogger<SearchesController> logger)
+            ApplicationTemplateService applicationTemplateService, IAuthorizationService authService,
+            ILogger<SearchesController> logger)
         {
             this.searchService = searchService;
             this.departmentService = departmentService;
+            this.applicationTemplateService = applicationTemplateService;
             this.authService = authService;
             this.logger = logger;
         }
@@ -51,6 +55,13 @@ namespace Fair.Controllers
                 search.DepartmentId = departmentId;
                 search.Department = departmentService.GetDepartment(departmentId);
             }
+
+            ViewBag.ApplicationTemplates = applicationTemplateService.GetApplicationTemplates().Select(t => new SelectListItem
+            {
+                Value = t.Id.ToString(),
+                Text = t.Name
+            });
+
             return View(search);
         }
 
@@ -76,6 +87,11 @@ namespace Fair.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            ViewBag.ApplicationTemplates = applicationTemplateService.GetApplicationTemplates().Select(t => new SelectListItem
+            {
+                Value = t.Id.ToString(),
+                Text = t.Name
+            });
             return View(searchService.GetSearch(id));
         }
 
@@ -87,6 +103,7 @@ namespace Fair.Controllers
             search.Position = update.Position;
             search.DepartmentChairId = update.DepartmentChairId;
             search.CommitteeChairId = update.CommitteeChairId;
+            search.ApplicationTemplateId = update.ApplicationTemplateId;
             search.CommitteeMembers.RemoveAll(m => !committeeMemberIds.Contains(m.UserId));
             committeeMemberIds.RemoveAll(memberId => search.CommitteeMembers.Select(m => m.UserId).Contains(memberId));
             search.CommitteeMembers.AddRange(committeeMemberIds.Select(memberId => new CommitteeMember(search.Id, memberId)));

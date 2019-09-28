@@ -63,6 +63,7 @@ namespace Fair
             services.AddScoped<DocumentService>();
             services.AddScoped<DepartmentService>();
             services.AddScoped<SearchService>();
+            services.AddScoped<ApplicationTemplateService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
