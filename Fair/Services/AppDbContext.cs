@@ -13,6 +13,7 @@ namespace Fair.Services
         public DbSet<Department> Departments { get; set; }
         public DbSet<Search> Searches { get; set; }
         public DbSet<ApplicationTemplate> ApplicationTemplates { get; set; }
+        public DbSet<Application> Applications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,12 @@ namespace Fair.Services
             modelBuilder.Entity<ApplicationTemplate>().HasQueryFilter(t => !t.IsObsolete);
             modelBuilder.Entity<ApplicationTemplateDegree>().HasKey(d => new { d.ApplicationTemplateId, d.Index });
             modelBuilder.Entity<ApplicationTemplateDocument>().HasKey(d => new { d.ApplicationTemplateId, d.Index });
+            modelBuilder.Entity<Application>().Property(a => a.IsWithdrawn).HasDefaultValue(false);
+            modelBuilder.Entity<Application>().Property(a => a.IsDisqualified).HasDefaultValue(false);
+            modelBuilder.Entity<ApplicationDegree>().HasKey(d => new { d.ApplicationId, d.Index });
+            modelBuilder.Entity<ApplicationDegree>().Property(d => d.IsExpected).HasDefaultValue(false);
+            modelBuilder.Entity<ApplicationDocument>().HasKey(d => new { d.ApplicationId, d.Index });
+            modelBuilder.Entity<ApplicationReference>().HasKey(r => new { r.ApplicationId, r.Index });
         }
     }
 }

@@ -50,8 +50,13 @@ namespace Fair.Models
     {
         public int Id { get; set; }
 
+        [Required]
+        [MaxLength(255)]
         public string Name { get; set; }
+
+        [MaxLength(255)]
         public string ContentType { get; set; }
+
         public DateTime Timestamp { get; set; } = DateTime.Now;
 
         public int OwnerId { get; set; }
