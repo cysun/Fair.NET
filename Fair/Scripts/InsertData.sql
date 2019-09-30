@@ -6,6 +6,7 @@ ALTER SEQUENCE "Revisions_Id_seq" RESTART WITH 1000000;
 ALTER SEQUENCE "Documents_Id_seq" RESTART WITH 1000000;
 ALTER SEQUENCE "ApplicationTemplates_Id_seq" RESTART WITH 10000;
 ALTER SEQUENCE "Applications_Id_seq" RESTART WITH 1000000;
+ALTER SEQUENCE "Evaluations_Id_seq" RESTART WITH 1000000;
 
 INSERT INTO "Users" ("Username", "FirstName", "LastName", "Email", "IsAdmin", "IsSysAdmin") VALUES ('csun', 'Chengyu', 'Sun', 'csun@calstatela.edu', 't', 't');
 INSERT INTO "Users" ("Username", "FirstName", "LastName", "Email") VALUES ('eykang', 'Elaine', 'Kang', 'eykang@calstatela.edu');
