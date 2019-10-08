@@ -42,10 +42,12 @@ namespace Fair.Models
 
         public List<CommitteeMember> CommitteeMembers { get; set; } = new List<CommitteeMember>();
 
-        public List<Document> Documents { get; set; }
-
         public int ApplicationTemplateId { get; set; }
         public ApplicationTemplate ApplicationTemplate { get; set; }
+
+        public List<Document> Documents { get; set; }
+
+        public List<Application> Applications { get; set; }
     }
 
     [Table("CommitteeMembers")]

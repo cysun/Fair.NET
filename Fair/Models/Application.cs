@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -20,10 +21,16 @@ namespace Fair.Models
         [MaxLength(255)]
         public string LastName { get; set; }
 
+        [NotMapped]
+        public string Name => $"{FirstName} {LastName}";
+
         [Required]
         [MaxLength(255)]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Phone]
+        public string Phone { get; set; }
 
         [MaxLength(255)]
         public string CurrentPosition { get; set; }
@@ -36,31 +43,49 @@ namespace Fair.Models
 
         public List<ApplicationReference> References { get; set; }
 
+        public DateTime? DateCreated { get; set; }
+        public DateTime? DateSubmitted { get; set; }
+
+        [NotMapped]
+        public bool IsSubmitted => DateSubmitted != null;
+
         public bool IsWithdrawn { get; set; } = false;
-        public bool IsDisqualified { get; set; } = false;
 
-        public static Application FromTemplate(ApplicationTemplate template)
+        public Application AddFieldsFromTemplate(ApplicationTemplate template)
         {
-            var application = new Application();
-
-            application.Degrees = template.Degrees.Select(d => new ApplicationDegree
+            if (Degrees?.Any() != true)
             {
-                Index = d.Index,
-                Degree = d.Name
-            }).ToList();
+                Degrees = template.Degrees.Select(d => new ApplicationDegree
+                {
+                    Application = this,
+                    Index = d.Index,
+                    Degree = d.Name
+                }).ToList();
+            }
 
-            application.Documents = template.Documents.Select(d => new ApplicationDocument
+            if (Documents?.Any() != true)
             {
-                Index = d.Index,
-                Name = d.Name,
-                Description = d.Description
-            }).ToList();
+                Documents = template.Documents.Select(d => new ApplicationDocument
+                {
+                    Application = this,
+                    Index = d.Index,
+                    Name = d.Name,
+                    Description = d.Description
+                }).ToList();
+            }
 
-            application.References = new List<ApplicationReference>();
-            for (int i = 0; i < template.NumberOfReferences; ++i)
-                application.References.Add(new ApplicationReference());
+            if (References?.Any() != true)
+            {
+                References = new List<ApplicationReference>();
+                for (int i = 0; i < template.NumberOfReferences; ++i)
+                    References.Add(new ApplicationReference
+                    {
+                        Application = this,
+                        Index = i
+                    });
+            }
 
-            return application;
+            return this;
         }
     }
 
@@ -84,7 +109,8 @@ namespace Fair.Models
         [MaxLength(255)]
         public string Institution { get; set; }
 
-        public int Year { get; set; }
+        [Required]
+        public int? Year { get; set; }
 
         public bool IsExpected { get; set; } = false;
     }
@@ -115,19 +141,15 @@ namespace Fair.Models
 
         public int Index { get; set; }
 
-        [Required]
         [MaxLength(255)]
         public string Name { get; set; }
 
-        [Required]
         [MaxLength(255)]
         public string Institution { get; set; }
 
-        [Required]
         [MaxLength(255)]
         public string Title { get; set; }
-
-        [Required]
+         
         [MaxLength(255)]
         public string Phone { get; set; }
 

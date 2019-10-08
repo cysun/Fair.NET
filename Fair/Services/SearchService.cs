@@ -43,6 +43,7 @@ namespace Fair.Services
                 .Include(s => s.CommitteeChair)
                 .Include(s => s.CommitteeMembers).ThenInclude(m => m.User)
                 .Include(s => s.Documents)
+                .Include(s => s.Applications)
                 .SingleOrDefault();
         }
 

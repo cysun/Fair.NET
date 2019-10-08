@@ -64,6 +64,7 @@ namespace Fair
             services.AddScoped<DepartmentService>();
             services.AddScoped<SearchService>();
             services.AddScoped<ApplicationTemplateService>();
+            services.AddScoped<ApplicationService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -93,6 +94,9 @@ namespace Fair
                 endpoints.MapControllerRoute(name: "documents",
                     pattern: "Searches/{searchId}/Documents/{action}/{documentId?}",
                     defaults: new { controller = "Documents" });
+                endpoints.MapControllerRoute(name: "applications",
+                    pattern: "Searches/{searchId}/Applications/{action}/{applicationId?}",
+                    defaults: new { controller = "Applications" });
                 endpoints.MapControllerRoute("default", "{controller=Account}/{action=Login}/{id?}");
             });
         }

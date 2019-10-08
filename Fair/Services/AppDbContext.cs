@@ -35,7 +35,7 @@ namespace Fair.Services
             modelBuilder.Entity<ApplicationTemplateDegree>().HasKey(d => new { d.ApplicationTemplateId, d.Index });
             modelBuilder.Entity<ApplicationTemplateDocument>().HasKey(d => new { d.ApplicationTemplateId, d.Index });
             modelBuilder.Entity<Application>().Property(a => a.IsWithdrawn).HasDefaultValue(false);
-            modelBuilder.Entity<Application>().Property(a => a.IsDisqualified).HasDefaultValue(false);
+            modelBuilder.Entity<Application>().Property(a => a.DateCreated).HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity<ApplicationDegree>().HasKey(d => new { d.ApplicationId, d.Index });
             modelBuilder.Entity<ApplicationDegree>().Property(d => d.IsExpected).HasDefaultValue(false);
             modelBuilder.Entity<ApplicationDocument>().HasKey(d => new { d.ApplicationId, d.Index });

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Fair.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fair.Services
 {
@@ -24,6 +25,8 @@ namespace Fair.Services
                 (Template, Search) => new { Template, Search })
                 .Where(JoinResult => JoinResult.Search.Id == searchId)
                 .Select(JoinResult => JoinResult.Template)
+                .Include(t => t.Degrees)
+                .Include(t => t.Documents)
                 .SingleOrDefault();
         }
     }

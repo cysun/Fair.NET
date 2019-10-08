@@ -23,5 +23,4 @@ INSERT INTO "ApplicationTemplateDocuments" ("ApplicationTemplateId", "Index", "N
     'Cover letter should address minimum and preferred qualifications');
 INSERT INTO "ApplicationTemplateDocuments" ("ApplicationTemplateId", "Index", "Name") VALUES (10000, 2, 'Curriculum Vitae');
 INSERT INTO "ApplicationTemplateDocuments" ("ApplicationTemplateId", "Index", "Name", "Description") VALUES (10000, 3, 'Narrative Statement',
-    'Narrative statement should describe your commitment to working effectively with faculty, '
-    'staff, and students in a multicultural/multiethnic urban campus environment with a substantial population of first-generation students.');
+    'Narrative statement should describe your commitment to working effectively with faculty, staff, and students in a multicultural/multiethnic urban campus environment with a substantial population of first-generation students.');
