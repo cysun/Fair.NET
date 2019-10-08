@@ -127,9 +127,10 @@ CREATE TABLE "ApplicationReferences" (
     "ApplicationId" integer NOT NULL,
     "Index" integer NOT NULL,
     "Name" character varying(255) NULL,
-    "Institution" character varying(255) NULL,
     "Title" character varying(255) NULL,
+    "Email" character varying(255) NULL,
     "Phone" character varying(255) NULL,
+    "Institution" character varying(255) NULL,
     "ReportId" integer NULL,
     CONSTRAINT "PK_ApplicationReferences" PRIMARY KEY ("ApplicationId", "Index"),
     CONSTRAINT "FK_ApplicationReferences_Applications_ApplicationId" FOREIGN KEY ("ApplicationId") REFERENCES "Applications" ("Id") ON DELETE CASCADE,
@@ -212,5 +213,5 @@ CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
 ALTER TABLE "Revisions" ADD CONSTRAINT "FK_Revisions_Documents_DocumentId" FOREIGN KEY ("DocumentId") REFERENCES "Documents" ("Id") ON DELETE CASCADE;
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20191008164156_InitialSchema', '3.0.0');
+VALUES ('20191008212311_InitialSchema', '3.0.0');
 

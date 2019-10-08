@@ -1,0 +1,77 @@
+﻿@model Application
+
+@{
+  ViewData["Title"] = "Application Reference Reports";
+  var search = ViewBag.Search;
+  var uploadReport = $"{Context.Request.PathBase}/Searches/{search.Id}/Applications/{Model.Id}/ReferenceReports";
+  var downloadReport = $"{Context.Request.PathBase}/Searches/{search.Id}/Applications/{Model.Id}/ReferenceReports/Download";
+}
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
+    <li class="breadcrumb-item"><a href="../List">Applications</a></li>
+    <li class="breadcrumb-item"><a href="../View/@Model.Id">@Model.Name</a></li>
+    <li class="breadcrumb-item active">Reference Reports</li>
+  </ol>
+</nav>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Reference</th>
+      <th></th>
+      <th scope="col">File</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var reference in Model.References)
+    {
+      <tr>
+        <td>@reference.Name</td>
+        <td class="reference text-nowrap" data-report-id="@reference.ReportId">
+          <a class="btn btn-success download" href="@downloadReport/@reference.Index">Download</a>
+        </td>
+        <td>
+          <form action="@uploadReport/@reference.Index" class="dropzone"></form>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<div class="mt-2">
+  <a href="../View/@Model.Id" class="btn btn-secondary">Cancel</a>
+  <a href="../View/@Model.Id" class="btn btn-primary ml-2">Done</a>
+</div>
+
+@section StyleSheets{
+  <link rel="stylesheet" href="~/lib/dropzone/min/basic.min.css" />
+}
+@section Scripts {
+  <script src="~/lib/dropzone/min/dropzone.min.js"></script>
+  <script>
+    Dropzone.autoDiscover = false;
+    $(function () {
+      $(".reference").each(function () {
+        if (!$(this).attr("data-report-id"))
+          $(this).children("a").hide();
+      });
+      $(".dropzone").each(function () {
+        var dzone = $(this);
+        $(this).dropzone({
+          acceptedFiles: ".pdf,.doc,.docx,.txt",
+          init: function () {
+            this.on("success", function (file) {
+              dzone.closest("td").prev().children("a").show();
+            });
+            this.on("complete", function (file) {
+              this.removeFile(file);
+            });
+          }
+        });
+      });
+    });
+  </script>
+}

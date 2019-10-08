@@ -12,7 +12,8 @@
     <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
     <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
     <li class="breadcrumb-item"><a href="../List">Applications</a></li>
-    <li class="breadcrumb-item active">@Model.Name</li>
+    <li class="breadcrumb-item"><a href="../View/@Model.Id">@Model.Name</a></li>
+    <li class="breadcrumb-item active">Edit</li>
   </ol>
 </nav>
 
@@ -42,17 +43,17 @@
       <tr>
         <td class="w-50">
           @document.Name
-        <small class="text-muted"><br />@document.Description</small>
-      </td>
-      <td class="document text-nowrap" data-file-id="@document.FileId">
-        <a class="btn btn-primary view" href="@viewDocument/@document.Index">View</a>
-        <a class="btn btn-success download" href="@downloadDocument/@document.Index">Download</a>
-      </td>
-      <td>
-        <form action="@Context.Request.PathBase/Searches/@search.Id/Applications/@Model.Id/Documents/@document.Index" class="dropzone"></form>
-      </td>
-    </tr>
-  }
+          <small class="text-muted"><br />@document.Description</small>
+        </td>
+        <td class="document text-nowrap" data-file-id="@document.FileId">
+          <a class="btn btn-primary view" href="@viewDocument/@document.Index">View</a>
+          <a class="btn btn-success download" href="@downloadDocument/@document.Index">Download</a>
+        </td>
+        <td>
+          <form action="@Context.Request.PathBase/Searches/@search.Id/Applications/@Model.Id/Documents/@document.Index" class="dropzone"></form>
+        </td>
+      </tr>
+    }
   </tbody>
 </table>
 

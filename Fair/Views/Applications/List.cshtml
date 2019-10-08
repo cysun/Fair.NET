@@ -38,7 +38,7 @@
     @foreach (var application in Model.Applications)
     {
       <tr>
-        <td>@application.Name</td>
+        <td><a href="View/@application.Id">@application.Name</a></td>
         <td>@application.CurrentPosition</td>
         <td>@application.DateSubmitted?.ToString("d")</td>
       </tr>

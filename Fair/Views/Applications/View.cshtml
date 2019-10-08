@@ -1,0 +1,146 @@
+﻿@model Application
+
+@{
+  ViewData["Title"] = "View Application";
+  var search = ViewBag.Search;
+  var viewDocument = $"{Context.Request.PathBase}/Searches/{search.Id}/Applications/{Model.Id}/Documents/View";
+  var downloadDocument = $"{Context.Request.PathBase}/Searches/{search.Id}/Applications/{Model.Id}/Documents/Download";
+}
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
+    <li class="breadcrumb-item"><a href="../List">Applications</a></li>
+    <li class="breadcrumb-item active">@Model.Name</li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-header">Basic Information <a class="float-right" href="../EditApplication/@Model.Id">Edit</a></div>
+  <div class="card-body">
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>First Name</label>
+        <span class="form-control">@Model.FirstName</span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Last Name</label>
+        <span class="form-control">@Model.LastName</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>Email</label>
+        <span class="form-control">@Model.Email</span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Phone</label>
+        <span class="form-control">@Model.Phone</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>Current Position</label>
+        <span class="form-control">@Model.CurrentPosition</span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Current Employer</label>
+        <span class="form-control">@Model.CurrentEmployer</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">Education <a class="float-right" href="../EditApplication/@Model.Id">Edit</a></div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Degree</th>
+          <th scope="col">Major</th>
+          <th scope="col">Institution</th>
+          <th scope="col">Yar</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var degree in Model.Degrees)
+        {
+          <tr>
+            <td>@degree.Degree</td>
+            <td>@degree.Major</td>
+            <td>@degree.Institution</td>
+            <td>@degree.Year</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">Documents <a class="float-right" href="../EditApplicationDocuments/@Model.Id">Edit</a></div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">File</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var document in Model.Documents)
+        {
+          <tr>
+            <td>@document.Name</td>
+            <td class="text-nowrap">
+              @if (document.FileId != null)
+              {
+                <a class="btn btn-primary" href="@viewDocument/@document.Index">View</a>
+                <a class="btn btn-success" href="@downloadDocument/@document.Index">Download</a>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">References <a class="float-right" href="../EditApplicationReferences/@Model.Id">Edit</a></div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col" class="d-none d-lg-table-cell">Title</th>
+          <th scope="col" class="d-none d-lg-table-cell">Email</th>
+          <th scope="col" class="d-none d-lg-table-cell">Phone</th>
+          <th scope="col" class="d-none d-md-table-cell">Institution</th>
+          <th scope="col"><a href="../@Model.Id/ReferenceReports">Report</a></th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var reference in Model.References)
+        {
+          <tr>
+            <td>@reference.Name</td>
+            <td class="d-none d-lg-table-cell">@reference.Title</td>
+            <td class="d-none d-lg-table-cell">@reference.Email</td>
+            <td class="d-none d-lg-table-cell">@reference.Phone</td>
+            <td class="d-none d-md-table-cell">@reference.Institution</td>
+            <td>
+              @if (reference.ReportId != null)
+              {
+                <a asp-controller="Files" asp-action="Download" asp-route-id="@reference.ReportId"
+                   class="btn btn-success download">Download</a>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

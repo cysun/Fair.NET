@@ -10,7 +10,8 @@
     <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
     <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
     <li class="breadcrumb-item"><a href="../List">Applications</a></li>
-    <li class="breadcrumb-item active">@Model.Name</li>
+    <li class="breadcrumb-item"><a href="../View/@Model.Id">@Model.Name</a></li>
+    <li class="breadcrumb-item active">Edit</li>
   </ol>
 </nav>
 

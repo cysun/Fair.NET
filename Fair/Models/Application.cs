@@ -51,6 +51,23 @@ namespace Fair.Models
 
         public bool IsWithdrawn { get; set; } = false;
 
+        public Application CopyFrom(Application another)
+        {
+            FirstName = another.FirstName;
+            LastName = another.LastName;
+            Email = another.Email;
+            Phone = another.Phone;
+            CurrentPosition = another.CurrentPosition;
+            CurrentEmployer = another.CurrentEmployer;
+            if (Degrees?.Count == another.Degrees.Count)
+            {
+                for (int i = 0; i < Degrees.Count; ++i)
+                    Degrees[i].CopyFrom(another.Degrees[i]);
+            }
+
+            return this;
+        }
+
         public Application AddFieldsFromTemplate(ApplicationTemplate template)
         {
             if (Degrees?.Any() != true)
@@ -113,6 +130,17 @@ namespace Fair.Models
         public int? Year { get; set; }
 
         public bool IsExpected { get; set; } = false;
+
+        public ApplicationDegree CopyFrom(ApplicationDegree another)
+        {
+            Degree = another.Degree;
+            Major = another.Major;
+            Institution = another.Institution;
+            Year = another.Year;
+            IsExpected = another.IsExpected;
+
+            return this;
+        }
     }
 
     [Table("ApplicationDocuments")]
@@ -145,13 +173,16 @@ namespace Fair.Models
         public string Name { get; set; }
 
         [MaxLength(255)]
-        public string Institution { get; set; }
+        public string Title { get; set; }
 
         [MaxLength(255)]
-        public string Title { get; set; }
-         
+        public string Email { get; set; }
+
         [MaxLength(255)]
         public string Phone { get; set; }
+
+        [MaxLength(255)]
+        public string Institution { get; set; }
 
         public int? ReportId { get; set; }
         public File Report { get; set; }

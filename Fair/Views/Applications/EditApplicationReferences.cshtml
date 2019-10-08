@@ -1,0 +1,64 @@
+﻿@model Application
+
+@{
+  ViewData["Title"] = "Edit Application";
+  var search = ViewBag.Search;
+}
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
+    <li class="breadcrumb-item"><a href="../List">Applications</a></li>
+    <li class="breadcrumb-item"><a href="../View/@Model.Id">@Model.Name</a></li>
+    <li class="breadcrumb-item active">Edit</li>
+  </ol>
+</nav>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="../EditApplication/@Model.Id">Basic Information</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="../EditApplicationDocuments/@Model.Id">Documents</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">References</a>
+  </li>
+</ul>
+
+<form method="post" class="mt-2">
+  @for (int i = 0; i < Model.References.Count; ++i)
+  {
+    <fieldset>
+      <legend>Reference #@(i+1)</legend>
+      <input type="hidden" asp-for="References[i].Index" />
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label asp-for="References[i].Name"></label>
+          <input asp-for="References[i].Name" class="form-control" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label asp-for="References[i].Title"></label>
+          <input asp-for="References[i].Title" class="form-control" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label asp-for="References[i].Email"></label>
+          <input asp-for="References[i].Email" class="form-control" required>
+        </div>
+        <div class="form-group col-md-6">
+          <label asp-for="References[i].Phone"></label>
+          <input asp-for="References[i].Phone" class="form-control" required>
+        </div>
+        <div class="form-group col-12">
+          <label asp-for="References[i].Institution"></label>
+          <input asp-for="References[i].Institution" class="form-control" required>
+        </div>
+      </div>
+    </fieldset>
+  }
+  <div class="form-row mt-2">
+    <a href="../List" class="btn btn-secondary">Cancel</a>
+    <button class="btn btn-primary ml-2">Save</button>
+  </div>
+</form>

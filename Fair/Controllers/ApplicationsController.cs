@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using Fair.Models;
 using Fair.Services;
@@ -33,6 +34,12 @@ namespace Fair.Controllers
             return View(search);
         }
 
+        public IActionResult View(int searchId, int applicationId)
+        {
+            ViewBag.Search = searchService.GetSearch(searchId);
+            return View(applicationService.GetApplication(applicationId));
+        }
+
         [HttpGet]
         public IActionResult Add(int searchId)
         {
@@ -61,6 +68,18 @@ namespace Fair.Controllers
             return View(applicationService.GetApplication(applicationId));
         }
 
+        [HttpPost]
+        public IActionResult EditApplication(int applicationId, Application update)
+        {
+            var application = applicationService.GetApplication(applicationId);
+            application.CopyFrom(update);
+            applicationService.SaveChanges();
+
+            logger.LogInformation("{username} updated application {applicationId}", User.FindFirst(ClaimTypes.Name).Value, applicationId);
+
+            return Redirect($"../EditApplicationDocuments/{applicationId}");
+        }
+
         [HttpGet]
         public IActionResult EditApplicationDocuments(int searchId, int applicationId)
         {
@@ -77,14 +96,14 @@ namespace Fair.Controllers
             application.Documents[index].File = Models.File.FromUploadedFile(uploadedFile, user.Id);
             applicationService.SaveChanges();
 
-            logger.LogInformation("{username} uploaded document {documentName} for application {applicationId}",
-                user.Username, application.Documents[index].Name, application.Id);
+            logger.LogInformation("{username} uploaded document {fileId} for application {applicationId}",
+                user.Username, application.Documents[index].FileId, application.Id);
 
             return Ok();
         }
 
         [HttpGet("Searches/{searchId}/Applications/{applicationId}/Documents/View/{index}")]
-        public IActionResult ViewDocument(int searchId, int applicationId, int index)
+        public IActionResult ViewDocument(int applicationId, int index)
         {
             var application = applicationService.GetApplication(applicationId);
             var file = fileService.GetFile(application.Documents[index].FileId);
@@ -92,10 +111,60 @@ namespace Fair.Controllers
         }
 
         [HttpGet("Searches/{searchId}/Applications/{applicationId}/Documents/Download/{index}")]
-        public IActionResult DownloadDocument(int searchId, int applicationId, int index)
+        public IActionResult DownloadDocument(int applicationId, int index)
         {
             var application = applicationService.GetApplication(applicationId);
             var file = fileService.GetFile(application.Documents[index].FileId);
+            return File(file.OpenReadStream(), file.ContentType, file.Name);
+        }
+
+        [HttpGet]
+        public IActionResult EditApplicationReferences(int searchId, int applicationId)
+        {
+            ViewBag.Search = searchService.GetSearch(searchId);
+            return View(applicationService.GetApplication(applicationId));
+        }
+
+        [HttpPost]
+        public IActionResult EditApplicationReferences(int applicationId, List<ApplicationReference> references)
+        {
+            var application = applicationService.GetApplication(applicationId);
+            application.References = references;
+            applicationService.SaveChanges();
+
+            logger.LogInformation("{username} updated the references of application {applicationId}",
+                User.FindFirst(ClaimTypes.Name).Value, applicationId);
+
+            return Redirect($"../View/{applicationId}");
+        }
+
+        [HttpGet("Searches/{searchId}/Applications/{applicationId}/ReferenceReports")]
+        public IActionResult ReferenceReports(int searchId, int applicationId)
+        {
+            ViewBag.Search = searchService.GetSearch(searchId);
+            return View(applicationService.GetApplication(applicationId));
+        }
+
+        [HttpPost("Searches/{searchId}/Applications/{applicationId}/ReferenceReports/{index}")]
+        public IActionResult UploadReferenceReport(int applicationId, int index, [FromForm(Name = "file")] IFormFile uploadedFile)
+        {
+            var application = applicationService.GetApplication(applicationId);
+            var user = Models.User.PrincipalToUser(User);
+
+            application.References[index].Report = Models.File.FromUploadedFile(uploadedFile, user.Id);
+            applicationService.SaveChanges();
+
+            logger.LogInformation("{username} uploaded reference report {fileId} for application {applicationId}",
+                user.Username, application.References[index].ReportId, application.Id);
+
+            return Ok();
+        }
+
+        [HttpGet("Searches/{searchId}/Applications/{applicationId}/ReferenceReports/Download/{index}")]
+        public IActionResult DownloadReferenceReport(int applicationId, int index)
+        {
+            var application = applicationService.GetApplication(applicationId);
+            var file = fileService.GetFile(application.References[index].ReportId);
             return File(file.OpenReadStream(), file.ContentType, file.Name);
         }
     }
