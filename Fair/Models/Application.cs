@@ -35,7 +35,7 @@ namespace Fair.Models
         [MaxLength(255)]
         public string CurrentPosition { get; set; }
         [MaxLength(255)]
-        public string CurrentEmployer { get; set; }
+        public string CurrentInstitution { get; set; }
 
         public List<ApplicationDegree> Degrees { get; set; }
 
@@ -51,6 +51,16 @@ namespace Fair.Models
 
         public bool IsWithdrawn { get; set; } = false;
 
+        public bool? HaveMinimumQualifications { get; set; }
+        public bool? HavePreferredQualifications { get; set; }
+
+        public bool? IsAdvancedToPhoneInterview { get; set; }
+        public bool? IsAdvancedToCampusInterview { get; set; }
+
+        public string Notes { get; set; }
+
+        public DateTime? DateEvaluated { get; set; }
+
         public Application CopyFrom(Application another)
         {
             FirstName = another.FirstName;
@@ -58,7 +68,7 @@ namespace Fair.Models
             Email = another.Email;
             Phone = another.Phone;
             CurrentPosition = another.CurrentPosition;
-            CurrentEmployer = another.CurrentEmployer;
+            CurrentInstitution = another.CurrentInstitution;
             if (Degrees?.Count == another.Degrees.Count)
             {
                 for (int i = 0; i < Degrees.Count; ++i)

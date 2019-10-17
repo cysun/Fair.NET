@@ -6,7 +6,7 @@
 
 <nav>
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="List">Searches</a></li>
     <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@Model.Id">@Model.Name</a></li>
     <li class="breadcrumb-item active">Applications</li>
   </ol>
@@ -31,7 +31,9 @@
     <tr>
       <th>Name</th>
       <th>Current Position</th>
-      <th>Submitted</th>
+      <th>Current Institution</th>
+      <th>Phone Interview</th>
+      <th>Campus Interview</th>
     </tr>
   </thead>
   <tbody>
@@ -40,7 +42,19 @@
       <tr>
         <td><a href="View/@application.Id">@application.Name</a></td>
         <td>@application.CurrentPosition</td>
-        <td>@application.DateSubmitted?.ToString("d")</td>
+        <td>@application.CurrentInstitution</td>
+        <td>
+          @if (application.IsAdvancedToPhoneInterview ?? false)
+          {<span class="text-success">Yes</span>}
+          @if (!(application.IsAdvancedToPhoneInterview ?? true))
+          {<span class="text-danger">No</span>}
+        </td>
+        <td>
+          @if (application.IsAdvancedToCampusInterview ?? false)
+          {<span class="text-success">Yes</span>}
+          @if (!(application.IsAdvancedToCampusInterview ?? true))
+          {<span class="text-danger">No</span>}
+        </td>
       </tr>
     }
   </tbody>

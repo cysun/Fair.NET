@@ -14,7 +14,6 @@ namespace Fair.Services
         public DbSet<Search> Searches { get; set; }
         public DbSet<ApplicationTemplate> ApplicationTemplates { get; set; }
         public DbSet<Application> Applications { get; set; }
-        public DbSet<Evaluation> Evaluations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,7 +39,6 @@ namespace Fair.Services
             modelBuilder.Entity<ApplicationDegree>().Property(d => d.IsExpected).HasDefaultValue(false);
             modelBuilder.Entity<ApplicationDocument>().HasKey(d => new { d.ApplicationId, d.Index });
             modelBuilder.Entity<ApplicationReference>().HasKey(r => new { r.ApplicationId, r.Index });
-            modelBuilder.Entity<Evaluation>().HasIndex(e => new { e.ApplicationId, e.EvaluatorId }).IsUnique();
         }
     }
 }

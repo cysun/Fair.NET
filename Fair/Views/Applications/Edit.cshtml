@@ -7,9 +7,9 @@
 
 <nav>
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
-    <li class="breadcrumb-item"><a href="../List">Applications</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
+    <li class="breadcrumb-item d-none d-md-flex"><a href="../List">Applications</a></li>
     <li class="breadcrumb-item"><a href="../View/@Model.Id">@Model.Name</a></li>
     <li class="breadcrumb-item active">Edit</li>
   </ol>
@@ -20,10 +20,10 @@
     <a class="nav-link active" href="#">Basic Information</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../EditApplicationDocuments/@Model.Id">Documents</a>
+    <a class="nav-link" href="../EditDocuments/@Model.Id">Documents</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../EditApplicationReferences/@Model.Id">References</a>
+    <a class="nav-link" href="../EditReferences/@Model.Id">References</a>
   </li>
 </ul>
 
@@ -54,8 +54,8 @@
       <input asp-for="CurrentPosition" class="form-control" required>
     </div>
     <div class="form-group col-md-6">
-      <label asp-for="CurrentEmployer">Current Employer</label>
-      <input asp-for="CurrentEmployer" class="form-control" required>
+      <label asp-for="CurrentInstitution">Current Institution</label>
+      <input asp-for="CurrentInstitution" class="form-control" required>
     </div>
   </div>
   @for (int i = 0; i < Model.Degrees.Count; ++i)
@@ -86,7 +86,7 @@
     </div>
   }
   <div class="form-row mt-2">
-    <a href="../List" class="btn btn-secondary">Cancel</a>
+    <a href="../View/@Model.Id" class="btn btn-secondary">Cancel</a>
     <button class="btn btn-primary ml-2">Next</button>
   </div>
 </form>

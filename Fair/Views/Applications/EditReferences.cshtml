@@ -7,9 +7,9 @@
 
 <nav>
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
-    <li class="breadcrumb-item"><a href="../List">Applications</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
+    <li class="breadcrumb-item d-none d-md-flex"><a href="../List">Applications</a></li>
     <li class="breadcrumb-item"><a href="../View/@Model.Id">@Model.Name</a></li>
     <li class="breadcrumb-item active">Edit</li>
   </ol>
@@ -17,10 +17,10 @@
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link" href="../EditApplication/@Model.Id">Basic Information</a>
+    <a class="nav-link" href="../Edit/@Model.Id">Basic Information</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../EditApplicationDocuments/@Model.Id">Documents</a>
+    <a class="nav-link" href="../EditDocuments/@Model.Id">Documents</a>
   </li>
   <li class="nav-item">
     <a class="nav-link active" href="#">References</a>
@@ -58,7 +58,7 @@
     </fieldset>
   }
   <div class="form-row mt-2">
-    <a href="../List" class="btn btn-secondary">Cancel</a>
+    <a href="../View/@Model.Id" class="btn btn-secondary">Cancel</a>
     <button class="btn btn-primary ml-2">Save</button>
   </div>
 </form>

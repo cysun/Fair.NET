@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Fair.Models;
@@ -58,18 +59,18 @@ namespace Fair.Controllers
 
             logger.LogInformation("{username} created application {applicationId}", User.FindFirst(ClaimTypes.Name).Value, application.Id);
 
-            return Redirect($"EditApplicationDocuments/{application.Id}");
+            return Redirect($"EditDocuments/{application.Id}");
         }
 
         [HttpGet]
-        public IActionResult EditApplication(int searchId, int applicationId)
+        public IActionResult Edit(int searchId, int applicationId)
         {
             ViewBag.Search = searchService.GetSearch(searchId);
             return View(applicationService.GetApplication(applicationId));
         }
 
         [HttpPost]
-        public IActionResult EditApplication(int applicationId, Application update)
+        public IActionResult Edit(int applicationId, Application update)
         {
             var application = applicationService.GetApplication(applicationId);
             application.CopyFrom(update);
@@ -77,11 +78,35 @@ namespace Fair.Controllers
 
             logger.LogInformation("{username} updated application {applicationId}", User.FindFirst(ClaimTypes.Name).Value, applicationId);
 
-            return Redirect($"../EditApplicationDocuments/{applicationId}");
+            return Redirect($"../EditDocuments/{applicationId}");
         }
 
         [HttpGet]
-        public IActionResult EditApplicationDocuments(int searchId, int applicationId)
+        public IActionResult Evaluate(int searchId, int applicationId)
+        {
+            ViewBag.Search = searchService.GetSearch(searchId);
+            return View(applicationService.GetApplication(applicationId));
+        }
+
+        [HttpPost]
+        public IActionResult Evaluate(int applicationId, Application update)
+        {
+            var application = applicationService.GetApplication(applicationId);
+            application.HaveMinimumQualifications = update.HaveMinimumQualifications;
+            application.HavePreferredQualifications = update.HavePreferredQualifications;
+            application.IsAdvancedToPhoneInterview = update.IsAdvancedToPhoneInterview;
+            application.IsAdvancedToCampusInterview = update.IsAdvancedToCampusInterview;
+            application.Notes = update.Notes;
+            application.DateEvaluated = DateTime.Now;
+            applicationService.SaveChanges();
+
+            logger.LogInformation("{username} updated evaluation for {applicationId}", User.FindFirst(ClaimTypes.Name).Value, applicationId);
+
+            return Redirect($"../View/{applicationId}");
+        }
+
+        [HttpGet]
+        public IActionResult EditDocuments(int searchId, int applicationId)
         {
             ViewBag.Search = searchService.GetSearch(searchId);
             return View(applicationService.GetApplication(applicationId));
@@ -119,14 +144,14 @@ namespace Fair.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditApplicationReferences(int searchId, int applicationId)
+        public IActionResult EditReferences(int searchId, int applicationId)
         {
             ViewBag.Search = searchService.GetSearch(searchId);
             return View(applicationService.GetApplication(applicationId));
         }
 
         [HttpPost]
-        public IActionResult EditApplicationReferences(int applicationId, List<ApplicationReference> references)
+        public IActionResult EditReferences(int applicationId, List<ApplicationReference> references)
         {
             var application = applicationService.GetApplication(applicationId);
             application.References = references;

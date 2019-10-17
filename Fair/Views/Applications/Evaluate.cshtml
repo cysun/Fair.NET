@@ -1,0 +1,73 @@
+﻿@model Application
+
+@{
+  ViewData["Title"] = "Evaluate Application";
+  var search = ViewBag.Search;
+}
+
+<nav>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
+    <li class="breadcrumb-item d-none d-md-flex"><a href="../List">Applications</a></li>
+    <li class="breadcrumb-item"><a href="../View/@Model.Id">@Model.Name</a></li>
+    <li class="breadcrumb-item active">Evaluate</li>
+  </ol>
+</nav>
+
+<form method="post" class="mt-2">
+  <table class="table table-hover">
+    <tr>
+      <td>Does the candidate have the minimum qualifications?</td>
+      <td class="text-nowrap">
+        <input type="radio" asp-for="HaveMinimumQualifications" value="true" /> Yes
+        <input type="radio" asp-for="HaveMinimumQualifications" value="false" class="ml-3" /> No
+      </td>
+    </tr>
+    <tr>
+      <td>Does the candidate have the preferred qualifications?</td>
+      <td class="text-nowrap">
+        <input type="radio" asp-for="HavePreferredQualifications" value="true" /> Yes
+        <input type="radio" asp-for="HavePreferredQualifications" value="false" class="ml-3" /> No
+      </td>
+    </tr>
+    <tr>
+      <td>Shall the candidate be invited for a phone interview?</td>
+      <td class="text-nowrap">
+        <input type="radio" asp-for="IsAdvancedToPhoneInterview" value="true" /> Yes
+        <input type="radio" asp-for="IsAdvancedToPhoneInterview" value="false" class="ml-3" /> No
+      </td>
+    </tr>
+    <tr>
+      <td>Shall the candidate be invited for a campus interview?</td>
+      <td class="text-nowrap">
+        <input type="radio" asp-for="IsAdvancedToCampusInterview" value="true" /> Yes
+        <input type="radio" asp-for="IsAdvancedToCampusInterview" value="false" class="ml-3" /> No
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2"><textarea id="summernote" name="Notes" class="form-control">@Html.Raw(Model.Notes)</textarea></td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <a href="../View/@Model.Id" class="btn btn-secondary">Cancel</a>
+        <button class="btn btn-primary ml-2">Save</button>
+      </td>
+    </tr>
+  </table>
+</form>
+
+@section StyleSheets{
+  <link href="~/lib/summernote/summernote-bs4.css" rel="stylesheet">
+}
+
+@section Scripts{
+  <script src="~/lib/summernote/summernote-bs4.min.js"></script>
+  <script>
+    $(function () {
+      $("#summernote").summernote({
+        height: 200
+      });
+    });
+  </script>
+}

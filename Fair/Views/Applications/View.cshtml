@@ -9,15 +9,63 @@
 
 <nav>
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
     <li class="breadcrumb-item"><a href="../List">Applications</a></li>
     <li class="breadcrumb-item active">@Model.Name</li>
   </ol>
 </nav>
 
+<div class="card border-primary mb-3">
+  <div class="card-header">Evaluation <a class="float-right" href="../Evaluate/@Model.Id">Edit</a></div>
+  <div class="card-body">
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label>Minimum Qualifications</label>
+        <span class="form-control font-weight-bold">
+          @if (Model.HaveMinimumQualifications ?? false)
+          {<span class="text-success">Yes</span>}
+          @if (!(Model.HaveMinimumQualifications ?? true))
+          {<span class="text-danger">No</span>}
+        </span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Preferred Qualifications</label>
+        <span class="form-control font-weight-bold">
+          @if (Model.HavePreferredQualifications ?? false)
+          {<span class="text-success">Yes</span>}
+          @if (!(Model.HavePreferredQualifications ?? true))
+          {<span class="text-danger">No</span>}
+        </span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Advanced to Phone Interview</label>
+        <span class="form-control font-weight-bold">
+          @if (Model.IsAdvancedToPhoneInterview ?? false)
+          {<span class="text-success">Yes</span>}
+          @if (!(Model.IsAdvancedToPhoneInterview ?? true))
+          {<span class="text-danger">No</span>}
+        </span>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Advanced to Campus Interview</label>
+        <span class="form-control font-weight-bold">
+          @if (Model.IsAdvancedToCampusInterview ?? false)
+          {<span class="text-success">Yes</span>}
+          @if (!(Model.IsAdvancedToCampusInterview ?? true))
+          {<span class="text-danger">No</span>}
+        </span>
+      </div>
+      <div class="form-group col-12">
+        <label>Notes</label>
+        <div class="border rounded-lg p-3">@Html.Raw(Model.Notes)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="card">
-  <div class="card-header">Basic Information <a class="float-right" href="../EditApplication/@Model.Id">Edit</a></div>
+  <div class="card-header">Basic Information <a class="float-right" href="../Edit/@Model.Id">Edit</a></div>
   <div class="card-body">
     <div class="row">
       <div class="form-group col-md-6">
@@ -45,15 +93,15 @@
         <span class="form-control">@Model.CurrentPosition</span>
       </div>
       <div class="form-group col-md-6">
-        <label>Current Employer</label>
-        <span class="form-control">@Model.CurrentEmployer</span>
+        <label>Current Institution</label>
+        <span class="form-control">@Model.CurrentInstitution</span>
       </div>
     </div>
   </div>
 </div>
 
 <div class="card">
-  <div class="card-header">Education <a class="float-right" href="../EditApplication/@Model.Id">Edit</a></div>
+  <div class="card-header">Education <a class="float-right" href="../Edit/@Model.Id">Edit</a></div>
   <div class="card-body">
     <table class="table">
       <thead>
@@ -80,7 +128,7 @@
 </div>
 
 <div class="card">
-  <div class="card-header">Documents <a class="float-right" href="../EditApplicationDocuments/@Model.Id">Edit</a></div>
+  <div class="card-header">Documents <a class="float-right" href="../EditDocuments/@Model.Id">Edit</a></div>
   <div class="card-body">
     <table class="table">
       <thead>
@@ -109,7 +157,7 @@
 </div>
 
 <div class="card">
-  <div class="card-header">References <a class="float-right" href="../EditApplicationReferences/@Model.Id">Edit</a></div>
+  <div class="card-header">References <a class="float-right" href="../EditReferences/@Model.Id">Edit</a></div>
   <div class="card-body">
     <table class="table">
       <thead>
