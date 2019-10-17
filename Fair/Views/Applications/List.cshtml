@@ -30,8 +30,8 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Current Position</th>
-      <th>Current Institution</th>
+      <th class="d-none d-md-table-cell">Current Position</th>
+      <th class="d-none d-md-table-cell">Current Institution</th>
       <th>Phone Interview</th>
       <th>Campus Interview</th>
     </tr>
@@ -41,8 +41,8 @@
     {
       <tr>
         <td><a href="View/@application.Id">@application.Name</a></td>
-        <td>@application.CurrentPosition</td>
-        <td>@application.CurrentInstitution</td>
+        <td class="d-none d-md-table-cell">@application.CurrentPosition</td>
+        <td class="d-none d-md-table-cell">@application.CurrentInstitution</td>
         <td>
           @if (application.IsAdvancedToPhoneInterview ?? false)
           {<span class="text-success">Yes</span>}

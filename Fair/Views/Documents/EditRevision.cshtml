@@ -8,9 +8,9 @@
 
 <nav>
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="List">Searches</a></li>
-    <li class="breadcrumb-item"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
-    <li class="breadcrumb-item"><a href="../../../../Documents/List">Documents</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="List">Searches</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
+    <li class="breadcrumb-item d-none d-lg-flex"><a href="../../../../Documents/List">Documents</a></li>
     <li class="breadcrumb-item"><a href="../../../View/@document.Id">@document.Name</a></li>
     <li class="breadcrumb-item active">Edit Revision @Model.Number</li>
   </ol>
