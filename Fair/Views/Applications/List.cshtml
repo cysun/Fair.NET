@@ -32,8 +32,14 @@
       <th>Name</th>
       <th class="d-none d-md-table-cell">Current Position</th>
       <th class="d-none d-md-table-cell">Current Institution</th>
-      <th>Phone Interview</th>
-      <th>Campus Interview</th>
+      @if (Model.IsReviewStarted)
+      {
+        <th>Phone Interview</th>
+      }
+      @if (Model.IsPhoneInterviewStarted)
+      {
+        <th>Campus Interview</th>
+      }
     </tr>
   </thead>
   <tbody>
@@ -43,18 +49,24 @@
         <td><a href="View/@application.Id">@application.Name</a></td>
         <td class="d-none d-md-table-cell">@application.CurrentPosition</td>
         <td class="d-none d-md-table-cell">@application.CurrentInstitution</td>
-        <td>
-          @if (application.IsAdvancedToPhoneInterview ?? false)
-          {<span class="text-success">Yes</span>}
-          @if (!(application.IsAdvancedToPhoneInterview ?? true))
-          {<span class="text-danger">No</span>}
-        </td>
-        <td>
-          @if (application.IsAdvancedToCampusInterview ?? false)
-          {<span class="text-success">Yes</span>}
-          @if (!(application.IsAdvancedToCampusInterview ?? true))
-          {<span class="text-danger">No</span>}
-        </td>
+        @if (Model.IsReviewStarted)
+        {
+          <td>
+            @if (application.IsAdvancedToPhoneInterview ?? false)
+            {<span class="text-success">Yes</span>}
+            @if (!(application.IsAdvancedToPhoneInterview ?? true))
+            {<span class="text-danger">No</span>}
+          </td>
+        }
+        @if (Model.IsPhoneInterviewStarted)
+        {
+          <td>
+            @if (application.IsAdvancedToCampusInterview ?? false)
+            {<span class="text-success">Yes</span>}
+            @if (!(application.IsAdvancedToCampusInterview ?? true))
+            {<span class="text-danger">No</span>}
+          </td>
+        }
       </tr>
     }
   </tbody>

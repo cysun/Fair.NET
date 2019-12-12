@@ -16,15 +16,18 @@ namespace Fair.Controllers
         private readonly SearchService searchService;
         private readonly ApplicationService applicationService;
         private readonly ApplicationTemplateService applicationTemplateService;
+        private readonly EvaluationService evaluationService;
         private readonly ILogger<ApplicationsController> logger;
 
         public ApplicationsController(FileService fileService, SearchService searchService, ApplicationService applicationService,
-            ApplicationTemplateService applicationTemplateService, ILogger<ApplicationsController> logger)
+            ApplicationTemplateService applicationTemplateService, EvaluationService evaluationService,
+            ILogger<ApplicationsController> logger)
         {
             this.fileService = fileService;
             this.searchService = searchService;
             this.applicationService = applicationService;
             this.applicationTemplateService = applicationTemplateService;
+            this.evaluationService = evaluationService;
             this.logger = logger;
         }
 
@@ -37,7 +40,23 @@ namespace Fair.Controllers
 
         public IActionResult View(int searchId, int applicationId)
         {
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var evaluation = evaluationService.GetEvaluation(applicationId, userId);
+            if (evaluation == null)
+            {
+                evaluation = new Evaluation
+                {
+                    ApplicationId = applicationId,
+                    EvaluatorId = userId
+                };
+                evaluationService.AddEvaluation(evaluation);
+                evaluationService.SaveChanges();
+            }
+
             ViewBag.Search = searchService.GetSearch(searchId);
+            ViewBag.UserId = userId;
+            ViewBag.Evaluation = evaluation;
+
             return View(applicationService.GetApplication(applicationId));
         }
 
@@ -82,14 +101,14 @@ namespace Fair.Controllers
         }
 
         [HttpGet]
-        public IActionResult Evaluate(int searchId, int applicationId)
+        public IActionResult CommitteeEvaluate(int searchId, int applicationId)
         {
             ViewBag.Search = searchService.GetSearch(searchId);
             return View(applicationService.GetApplication(applicationId));
         }
 
         [HttpPost]
-        public IActionResult Evaluate(int applicationId, Application update)
+        public IActionResult CommitteeEvaluate(int applicationId, Application update)
         {
             var application = applicationService.GetApplication(applicationId);
             application.HaveMinimumQualifications = update.HaveMinimumQualifications;
@@ -100,9 +119,35 @@ namespace Fair.Controllers
             application.DateEvaluated = DateTime.Now;
             applicationService.SaveChanges();
 
-            logger.LogInformation("{username} updated evaluation for {applicationId}", User.FindFirst(ClaimTypes.Name).Value, applicationId);
+            logger.LogInformation("{username} updated committee evaluation for {applicationId}",
+                User.FindFirst(ClaimTypes.Name).Value, applicationId);
 
             return Redirect($"../View/{applicationId}");
+        }
+
+        [HttpGet]
+        // The route variable name is applicationId (see app.UseEndpoints() in Startup.cs), but
+        // in this operation we are actually passing evaluationId.
+        public IActionResult Evaluate([FromRoute(Name = "applicationId")] int evaluationId)
+        {
+            var evaluation = evaluationService.GetEvaluation(evaluationId);
+            ViewBag.Application = evaluation.Application;
+            ViewBag.Search = evaluation.Application.Search;
+            return View(evaluation);
+        }
+
+        [HttpPost]
+        public IActionResult Evaluate([FromRoute(Name = "applicationId")] int evaluationId, Evaluation update)
+        {
+            var evaluation = evaluationService.GetEvaluation(evaluationId);
+            evaluation.Rating = update.Rating;
+            evaluation.Notes = update.Notes;
+            evaluationService.SaveChanges();
+
+            logger.LogInformation("{username} updated evaluation {evaluationId}",
+                User.FindFirst(ClaimTypes.Name).Value, evaluationId);
+
+            return Redirect($"../View/{evaluation.Application.Id}");
         }
 
         [HttpGet]

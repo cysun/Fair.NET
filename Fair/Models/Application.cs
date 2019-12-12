@@ -51,6 +51,8 @@ namespace Fair.Models
 
         public bool IsWithdrawn { get; set; } = false;
 
+        public List<Evaluation> Evaluations { get; set; } = new List<Evaluation>();
+
         public bool? HaveMinimumQualifications { get; set; }
         public bool? HavePreferredQualifications { get; set; }
 

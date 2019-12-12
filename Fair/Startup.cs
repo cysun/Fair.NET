@@ -16,15 +16,28 @@ namespace Fair
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
+            Env = env;
             Configuration = configuration;
         }
+
+        public IWebHostEnvironment Env { get; set; }
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Since ASP.NET Core 3.0, Razor file runtime compilation (so you can change a .cshtml file then
+            // refresh in browser without restarting the server) must be enabled explicitly. See
+            // https://docs.microsoft.com/en-us/aspnet/core/mvc/views/view-compilation?view=aspnetcore-3.1
+            IMvcBuilder builder = services.AddRazorPages();
+#if DEBUG
+            if (Env.IsDevelopment())
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
+#endif
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
             services.AddAuthorization(options =>
             {
@@ -65,6 +78,7 @@ namespace Fair
             services.AddScoped<SearchService>();
             services.AddScoped<ApplicationTemplateService>();
             services.AddScoped<ApplicationService>();
+            services.AddScoped<EvaluationService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

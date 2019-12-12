@@ -1,7 +1,8 @@
-﻿@model Application
+﻿@model Evaluation
 
 @{
   ViewData["Title"] = "Evaluate Application";
+  var application = ViewBag.Application;
   var search = ViewBag.Search;
 }
 
@@ -10,39 +11,35 @@
     <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="List">Searches</a></li>
     <li class="breadcrumb-item d-none d-lg-flex"><a asp-controller="Searches" asp-action="View" asp-route-id="@search.Id">@search.Name</a></li>
     <li class="breadcrumb-item d-none d-md-flex"><a href="../List">Applications</a></li>
-    <li class="breadcrumb-item"><a href="../View/@Model.Id">@Model.Name</a></li>
-    <li class="breadcrumb-item active">Evaluate</li>
+    <li class="breadcrumb-item"><a href="../View/@application.Id">@application.Name</a></li>
+    <li class="breadcrumb-item active">Evaluate Application</li>
   </ol>
 </nav>
 
 <form method="post" class="mt-2">
   <table class="table table-hover">
-    <tr>
-      <td>Does the candidate have the minimum qualifications?</td>
+    <tr style="color: green;">
+      <td>The candidate is outstanding and should definitely be invited for a phone interview.</td>
       <td class="text-nowrap">
-        <input type="radio" asp-for="HaveMinimumQualifications" value="true" /> Yes
-        <input type="radio" asp-for="HaveMinimumQualifications" value="false" class="ml-3" /> No
+        <input type="radio" asp-for="Rating" value="@Rating.Outstanding" />
       </td>
     </tr>
-    <tr>
-      <td>Does the candidate have the preferred qualifications?</td>
+    <tr style="color: lightgreen;">
+      <td>The candidate is good and should be invited for a phone interview.</td>
       <td class="text-nowrap">
-        <input type="radio" asp-for="HavePreferredQualifications" value="true" /> Yes
-        <input type="radio" asp-for="HavePreferredQualifications" value="false" class="ml-3" /> No
+        <input type="radio" asp-for="Rating" value="@Rating.Good" />
       </td>
     </tr>
-    <tr>
-      <td>Shall the candidate be invited for a phone interview?</td>
+    <tr style="color: orange;">
+      <td>The candidate is average; may be invited for phone interview if we don't have enough people.</td>
       <td class="text-nowrap">
-        <input type="radio" asp-for="IsAdvancedToPhoneInterview" value="true" /> Yes
-        <input type="radio" asp-for="IsAdvancedToPhoneInterview" value="false" class="ml-3" /> No
+        <input type="radio" asp-for="Rating" value="@Rating.Average" />
       </td>
     </tr>
-    <tr>
-      <td>Shall the candidate be invited for a campus interview?</td>
+    <tr style="color: red;">
+      <td>The candidate is poor and should not be invited for phone interview.</td>
       <td class="text-nowrap">
-        <input type="radio" asp-for="IsAdvancedToCampusInterview" value="true" /> Yes
-        <input type="radio" asp-for="IsAdvancedToCampusInterview" value="false" class="ml-3" /> No
+        <input type="radio" asp-for="Rating" value="@Rating.Poor" />
       </td>
     </tr>
     <tr>
@@ -50,7 +47,7 @@
     </tr>
     <tr>
       <td colspan="2">
-        <a href="../View/@Model.Id" class="btn btn-secondary">Cancel</a>
+        <a href="../View/@application.Id" class="btn btn-secondary">Cancel</a>
         <button class="btn btn-primary ml-2">Save</button>
       </td>
     </tr>

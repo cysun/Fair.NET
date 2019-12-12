@@ -25,6 +25,30 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
+      <label asp-for="SearchStartDate">Search Start</label>
+      <input asp-for="SearchStartDate" type="date" class="form-control" required>
+    </div>
+    <div class="form-group col-md-6">
+      <label asp-for="ReviewStartDate">Review Start</label>
+      <input asp-for="ReviewStartDate" type="date" class="form-control">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label asp-for="PhoneInterviewStartDate">Phone Interview Start</label>
+      <input asp-for="PhoneInterviewStartDate" type="date" class="form-control">
+    </div>
+    <div class="form-group col-md-4">
+      <label asp-for="CampusInterviewStartDate">Campus Interview Start</label>
+      <input asp-for="CampusInterviewStartDate" type="date" class="form-control">
+    </div>
+    <div class="form-group col-md-4">
+      <label asp-for="SearchCloseDate">Search Close</label>
+      <input asp-for="SearchCloseDate" type="date" class="form-control">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
       <label for="departmentSearch">Department</label>
       <input id="departmentSearch" class="form-control department-search" data-target="departmentId" value="@Model.Department?.Name" required />
       <input id="departmentId" name="departmentId" type="hidden" value="@Model.DepartmentId" />

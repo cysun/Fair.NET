@@ -28,11 +28,21 @@ namespace Fair.Models
         [MaxLength(255)]
         public string Position { get; set; }
 
-        public DateTime StartDate { get; set; } = DateTime.Now;
-        public DateTime? CloseDate { get; set; }
+        public DateTime SearchStartDate { get; set; } = DateTime.Now;
+        public DateTime? ReviewStartDate { get; set; }
+        public DateTime? PhoneInterviewStartDate { get; set; }
+        public DateTime? CampusInterviewStartDate { get; set; }
+        public DateTime? SearchCloseDate { get; set; }
 
         [NotMapped]
-        public string Name => $"{Department?.Name} {Position}, {StartDate.Year}-{StartDate.Year + 1}";
+        public bool IsReviewStarted => ReviewStartDate != null && ReviewStartDate < DateTime.Now;
+        [NotMapped]
+        public bool IsPhoneInterviewStarted => PhoneInterviewStartDate != null && PhoneInterviewStartDate < DateTime.Now;
+        [NotMapped]
+        public bool IsCampusVisitStarted => CampusInterviewStartDate != null && CampusInterviewStartDate < DateTime.Now;
+
+        [NotMapped]
+        public string Name => $"{Department?.Name} {Position}, {SearchStartDate.Year}-{SearchStartDate.Year + 1}";
 
         public int DepartmentChairId { get; set; }
         public User DepartmentChair { get; set; }

@@ -99,11 +99,18 @@ namespace Fair.Controllers
         public async Task<IActionResult> Edit(int id, Search update, List<int> committeeMemberIds)
         {
             var search = searchService.GetSearch(id);
-            search.DepartmentId = update.DepartmentId;
             search.Position = update.Position;
+            search.ApplicationTemplateId = update.ApplicationTemplateId;
+
+            search.SearchStartDate = update.SearchStartDate;
+            search.ReviewStartDate = update.ReviewStartDate;
+            search.PhoneInterviewStartDate = update.PhoneInterviewStartDate;
+            search.CampusInterviewStartDate = update.CampusInterviewStartDate;
+            search.SearchCloseDate = update.SearchCloseDate;
+
+            search.DepartmentId = update.DepartmentId;
             search.DepartmentChairId = update.DepartmentChairId;
             search.CommitteeChairId = update.CommitteeChairId;
-            search.ApplicationTemplateId = update.ApplicationTemplateId;
             search.CommitteeMembers.RemoveAll(m => !committeeMemberIds.Contains(m.UserId));
             committeeMemberIds.RemoveAll(memberId => search.CommitteeMembers.Select(m => m.UserId).Contains(memberId));
             search.CommitteeMembers.AddRange(committeeMemberIds.Select(memberId => new CommitteeMember(search.Id, memberId)));

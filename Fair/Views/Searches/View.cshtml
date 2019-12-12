@@ -30,14 +30,30 @@
   <p class="text-right mt-2"><a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit Search</a></p>
 }
 
-<div class="card">
-  <div class="card-header">Committee</div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">@Model.DepartmentChair.Name  (Department Chair)</li>
-    <li class="list-group-item">@Model.CommitteeChair.Name  (Committee Chair)</li>
-    @foreach (var member in Model.CommitteeMembers)
-    {
-      <li class="list-group-item">@member.User.Name</li>
-    }
-  </ul>
+<div class="row">
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="card-header">Timeline</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><span class="d-inline-block w-50">Search Start</span> @Model.SearchStartDate.ToString("d")</li>
+        <li class="list-group-item"><span class="d-inline-block w-50">Review Start</span> @Model.ReviewStartDate?.ToString("d")</li>
+        <li class="list-group-item"><span class="d-inline-block w-50">Phone Interview Start</span> @Model.PhoneInterviewStartDate?.ToString("d")</li>
+        <li class="list-group-item"><span class="d-inline-block w-50">Campus Interview Start</span> @Model.CampusInterviewStartDate?.ToString("d")</li>
+        <li class="list-group-item"><span class="d-inline-block w-50">Search Close</span> @Model.SearchCloseDate?.ToString("d")</li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="card-header">Committee</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">@Model.DepartmentChair.Name  (Department Chair)</li>
+        <li class="list-group-item">@Model.CommitteeChair.Name  (Committee Chair)</li>
+        @foreach (var member in Model.CommitteeMembers)
+        {
+          <li class="list-group-item">@member.User.Name</li>
+        }
+      </ul>
+    </div>
+  </div>
 </div>

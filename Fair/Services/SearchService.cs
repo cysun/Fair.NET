@@ -17,7 +17,7 @@ namespace Fair.Services
 
         public List<Search> GetSearches()
         {
-            return db.Searches.Include(s => s.Department).OrderByDescending(s => s.StartDate)
+            return db.Searches.Include(s => s.Department).OrderByDescending(s => s.SearchStartDate)
                  .AsEnumerable().OrderBy(s => s.Name).ToList();
         }
 
@@ -31,7 +31,7 @@ namespace Fair.Services
                    s.DepartmentChairId == user.Id ||
                    s.CommitteeChairId == user.Id ||
                    s.CommitteeMembers.Select(m => m.UserId).Contains(user.Id))
-                .OrderByDescending(s => s.StartDate)
+                .OrderByDescending(s => s.SearchStartDate)
                 .ToList();
         }
 

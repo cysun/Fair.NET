@@ -14,6 +14,7 @@ namespace Fair.Services
         public DbSet<Search> Searches { get; set; }
         public DbSet<ApplicationTemplate> ApplicationTemplates { get; set; }
         public DbSet<Application> Applications { get; set; }
+        public DbSet<Evaluation> Evaluations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,7 +25,7 @@ namespace Fair.Services
             modelBuilder.Entity<File>().Property(f => f.Timestamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity<Revision>().HasAlternateKey(r => new { r.DocumentId, r.Number });
             modelBuilder.Entity<Revision>().Property(r => r.Timestamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            modelBuilder.Entity<Search>().Property(s => s.StartDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            modelBuilder.Entity<Search>().Property(s => s.SearchStartDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
             modelBuilder.Entity<Search>().HasOne(s => s.DepartmentChair).WithMany().HasForeignKey(s => s.DepartmentChairId);
             modelBuilder.Entity<Search>().HasOne(s => s.CommitteeChair).WithMany().HasForeignKey(s => s.CommitteeChairId);
             modelBuilder.Entity<CommitteeMember>().HasKey(c => new { c.SearchId, c.UserId });
