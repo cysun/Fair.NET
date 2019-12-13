@@ -116,6 +116,11 @@ namespace Fair.Models
 
             return this;
         }
+
+        public Evaluation GetEvaluation(int evaluatorId)
+        {
+            return Evaluations.Where(e => e.EvaluatorId == evaluatorId).FirstOrDefault();
+        }
     }
 
     [Table("ApplicationDegrees")]

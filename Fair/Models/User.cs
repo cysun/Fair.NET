@@ -25,6 +25,9 @@ namespace Fair.Models
         [NotMapped]
         public string Name => $"{FirstName} {LastName}";
 
+        [NotMapped]
+        public string Initials => $"{FirstName[0]}{LastName[0]}";
+
         [Required]
         [MaxLength(255)]
         [EmailAddress]
@@ -43,6 +46,7 @@ namespace Fair.Models
                 new Claim(ClaimTypes.GivenName, FirstName),
                 new Claim(ClaimTypes.Surname, LastName),
                 new Claim(ClaimTypes.Email, Email),
+                new Claim(FairClaims.Initials.ToString(), Initials),
                 new Claim(FairClaims.IsAdmin.ToString(), (IsAdmin || IsSysAdmin).ToString()),
                 new Claim(FairClaims.IsSysAdmin.ToString(), IsSysAdmin.ToString())
             };

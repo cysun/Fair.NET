@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Fair.Models;
+using Fair.Security;
 using Fair.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,22 @@ namespace Fair.Controllers
         public IActionResult List(int searchId)
         {
             var search = searchService.GetSearch(searchId);
-            search.Applications = search.Applications.OrderBy(a => a.DateSubmitted).ToList();
+
+            var evalColumns = new List<(int Id, string Initials)>();
+            if (search.IsReviewStarted)
+            {
+                evalColumns.Add((search.DepartmentChair.Id, search.DepartmentChair.Initials));
+                evalColumns.Add((search.CommitteeChair.Id, search.CommitteeChair.Initials));
+                evalColumns.AddRange(search.CommitteeMembers.Select(m => (m.User.Id, m.User.Initials)).ToList());
+            }
+            else
+            {
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var userInitials = User.FindFirst(FairClaims.Initials.ToString()).Value;
+                evalColumns.Add((Id: userId, Initials: userInitials));
+            }
+
+            ViewBag.EvalColumns = evalColumns;
             return View(search);
         }
 

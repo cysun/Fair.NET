@@ -42,6 +42,14 @@
         "font/summernote.ttf",
         "font/summernote.woff"
       ]
+    },
+    {
+      "library": "bootstrap-table@1.15.5",
+      "destination": "wwwroot/lib/bootstrap-table/",
+      "files": [
+        "bootstrap-table.min.js",
+        "bootstrap-table.min.css"
+      ]
     }
   ]
 }
