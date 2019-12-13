@@ -31,19 +31,19 @@
   <thead>
     <tr>
       <th data-field="name" data-sortable="true" data-sorter="noLinkSorter">Name</th>
-      <th class="d-none d-md-table-cell" data-sortable="true">Current Position</th>
-      <th class="d-none d-md-table-cell" data-sortable="true">Current Institution</th>
+      <th class="d-none d-lg-table-cell" data-sortable="true">Current Position</th>
+      <th class="d-none d-lg-table-cell" data-sortable="true">Current Institution</th>
       @foreach (var evalColumn in ViewBag.EvalColumns)
       {
-        <th data-sortable="true">@evalColumn.Item2</th>
+        <th class="text-center" data-sortable="true">@evalColumn.Item2</th>
       }
       @if (Model.IsReviewStarted)
       {
-        <th data-sortable="true">Phone Interview</th>
+        <th class="text-center" data-sortable="true">Phone Interview</th>
       }
       @if (Model.IsPhoneInterviewStarted)
       {
-        <th data-sortable="true">Campus Interview</th>
+        <th class="text-center" data-sortable="true">Campus Interview</th>
       }
     </tr>
   </thead>
@@ -52,15 +52,15 @@
     {
       <tr>
         <td><a href="View/@application.Id">@application.LastName, @application.FirstName</a></td>
-        <td class="d-none d-md-table-cell">@application.CurrentPosition</td>
-        <td class="d-none d-md-table-cell">@application.CurrentInstitution</td>
+        <td class="d-none d-lg-table-cell">@application.CurrentPosition</td>
+        <td class="d-none d-lg-table-cell">@application.CurrentInstitution</td>
         @foreach (var evalColumn in ViewBag.EvalColumns)
         {
-          <td>@((int?) application.GetEvaluation(evalColumn.Item1)?.Rating)</td>
+          <td class="text-center">@((int?) application.GetEvaluation(evalColumn.Item1)?.Rating)</td>
         }
         @if (Model.IsReviewStarted)
         {
-          <td>
+          <td class="text-center">
             @if (application.IsAdvancedToPhoneInterview ?? false)
             {<span class="text-success">Yes</span>}
             @if (!(application.IsAdvancedToPhoneInterview ?? true))
@@ -69,7 +69,7 @@
         }
         @if (Model.IsPhoneInterviewStarted)
         {
-          <td>
+          <td class="text-center">
             @if (application.IsAdvancedToCampusInterview ?? false)
             {<span class="text-success">Yes</span>}
             @if (!(application.IsAdvancedToCampusInterview ?? true))

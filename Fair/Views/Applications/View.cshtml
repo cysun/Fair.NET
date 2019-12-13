@@ -75,16 +75,16 @@
     @switch (evaluation.Rating)
     {
       case Rating.Outstanding:
-        <span style="color: green;" class="font-weight-bold">@Rating.Outstanding</span>
+        <span style="color: green;" class="font-weight-bold">@Rating.Outstanding (@((int)Rating.Outstanding))</span>
         break;
       case Rating.Good:
-        <span style="color: lightgreen;" class="font-weight-bold">@Rating.Good</span>
+        <span style="color: lightgreen;" class="font-weight-bold">@Rating.Good  (@((int)Rating.Good))</span>
         break;
       case Rating.Average:
-        <span style="color: orange;" class="font-weight-bold">@Rating.Average</span>
+        <span style="color: orange;" class="font-weight-bold">@Rating.Average (@((int)Rating.Average))</span>
         break;
       case Rating.Poor:
-        <span style="color: red;" class="font-weight-bold">@Rating.Poor</span>
+        <span style="color: red;" class="font-weight-bold">@Rating.Poor (@((int)Rating.Poor))</span>
         break;
     }
     <a class="float-right" href="../Evaluate/@evaluation.Id">Edit</a>
