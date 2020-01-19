@@ -38,6 +38,10 @@ namespace Fair.Controllers
 
         public IActionResult View(int id)
         {
+            var search = searchService.GetSearch(id);
+            ViewBag.PhoneInterviews = search.Applications.Where(a => a.IsAdvancedToPhoneInterview == true).ToList();
+            ViewBag.CampusInterviews = search.Applications.Where(a => a.IsAdvancedToCampusInterview == true).ToList();
+
             return View(searchService.GetSearch(id));
         }
 

@@ -18,10 +18,16 @@
   </ol>
 </nav>
 
-@if (userId == search.CommitteeChairId || userId == search.DepartmentChairId)
+@if (search.IsReviewStarted)
 {
   <div class="card border-primary mb-3">
-    <div class="card-header">Committee Evaluation <a class="float-right" href="../CommitteeEvaluate/@Model.Id">Edit</a></div>
+    <div class="card-header">
+      Committee Evaluation
+      @if (userId == search.CommitteeChairId || userId == search.DepartmentChairId)
+      {
+        <a class="float-right" href="../CommitteeEvaluate/@Model.Id">Edit</a>
+      }
+    </div>
     <div class="card-body">
       <div class="row">
         <div class="form-group col-md-6">

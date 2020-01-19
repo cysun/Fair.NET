@@ -23,6 +23,24 @@
   <li class="nav-item">
     <a class="nav-link" href="@Context.Request.PathBase/Searches/@Model.Id/Applications/List">Applications (@Model.Applications.Count)</a>
   </li>
+  @if (Model.IsReviewStarted)
+  {
+    <li class="nav-item">
+      <a class="nav-link" href="@Context.Request.PathBase/Searches/@Model.Id/Applications/List?page=PhoneInterviews">
+        Online Interviews
+        (@ViewBag.PhoneInterviews.Count)
+      </a>
+    </li>
+  }
+  @if (Model.IsPhoneInterviewStarted)
+  {
+    <li class="nav-item">
+      <a class="nav-link" href="@Context.Request.PathBase/Searches/@Model.Id/Applications/List?page=CampusInterviews">
+        Campus Interviews
+        (@ViewBag.CampusInterviews.Count)
+      </a>
+    </li>
+  }
 </ul>
 
 @if ((await AuthorizationService.AuthorizeAsync(User, new Search(), "CanWriteSearch")).Succeeded)

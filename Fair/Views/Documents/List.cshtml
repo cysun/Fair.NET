@@ -23,6 +23,24 @@
   <li class="nav-item">
     <a class="nav-link" href="../Applications/List">Applications (@search.Applications.Count)</a>
   </li>
+  @if (search.IsReviewStarted)
+  {
+    <li class="nav-item">
+      <a class="nav-link" href="@Context.Request.PathBase/Searches/@search.Id/Applications/List?page=PhoneInterviews">
+        Online Interviews
+        (@ViewBag.PhoneInterviews.Count)
+      </a>
+    </li>
+  }
+  @if (search.IsPhoneInterviewStarted)
+  {
+    <li class="nav-item">
+      <a class="nav-link" href="@Context.Request.PathBase/Searches/@search.Id/Applications/List?page=CampusInterviews">
+        Campus Interviews
+        (@ViewBag.CampusInterviews.Count)
+      </a>
+    </li>
+  }
 </ul>
 
 <p class="text-right mt-2"><a href="Add" class="btn btn-primary">New Document</a></p>

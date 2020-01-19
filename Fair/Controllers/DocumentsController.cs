@@ -1,4 +1,5 @@
-﻿using Fair.Models;
+﻿using System.Linq;
+using Fair.Models;
 using Fair.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,10 @@ namespace Fair.Controllers
 
         public IActionResult List(int searchId)
         {
-            ViewBag.Search = searchService.GetSearch(searchId);
+            var search = searchService.GetSearch(searchId);
+            ViewBag.Search = search;
+            ViewBag.PhoneInterviews = search.Applications.Where(a => a.IsAdvancedToPhoneInterview == true).ToList();
+            ViewBag.CampusInterviews = search.Applications.Where(a => a.IsAdvancedToCampusInterview == true).ToList();
             return View(documentService.GetDocuments(searchId));
         }
 

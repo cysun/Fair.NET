@@ -32,7 +32,7 @@ namespace Fair.Controllers
             this.logger = logger;
         }
 
-        public IActionResult List(int searchId)
+        public IActionResult List(int searchId, string page = "Applications")
         {
             var search = searchService.GetSearch(searchId);
 
@@ -49,8 +49,25 @@ namespace Fair.Controllers
                 var userInitials = User.FindFirst(FairClaims.Initials.ToString()).Value;
                 evalColumns.Add((Id: userId, Initials: userInitials));
             }
-
             ViewBag.EvalColumns = evalColumns;
+
+            ViewBag.PhoneInterviews = search.Applications.Where(a => a.IsAdvancedToPhoneInterview == true).ToList();
+            ViewBag.CampusInterviews = search.Applications.Where(a => a.IsAdvancedToCampusInterview == true).ToList();
+
+            ViewBag.Page = page;
+            switch (page)
+            {
+                case "PhoneInterviews":
+                    ViewBag.Applications = ViewBag.PhoneInterviews;
+                    break;
+                case "CampusInterviews":
+                    ViewBag.Applications = ViewBag.CampusInterviews;
+                    break;
+                default:
+                    ViewBag.Applications = search.Applications;
+                    break;
+            }
+
             return View(search);
         }
 

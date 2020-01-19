@@ -20,8 +20,26 @@
     <a class="nav-link" href="../Documents/List">Documents (@Model.Documents.Count)</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="#">Applications (@Model.Applications.Count)</a>
+    <a class="nav-link Applications" href="List">Applications (@Model.Applications.Count)</a>
   </li>
+  @if (Model.IsReviewStarted)
+  {
+    <li class="nav-item">
+      <a class="nav-link PhoneInterviews" href="@Context.Request.PathBase/Searches/@Model.Id/Applications/List?page=PhoneInterviews">
+        Online Interviews
+        (@ViewBag.PhoneInterviews.Count)
+      </a>
+    </li>
+  }
+  @if (Model.IsPhoneInterviewStarted)
+  {
+    <li class="nav-item">
+      <a class="nav-link CampusInterviews" href="@Context.Request.PathBase/Searches/@Model.Id/Applications/List?page=CampusInterviews">
+        Campus Interviews
+        (@ViewBag.CampusInterviews.Count)
+      </a>
+    </li>
+  }
 </ul>
 
 <p class="mt-2"><a href="Add" class="btn btn-primary float-right">New Application</a></p>
@@ -37,18 +55,10 @@
       {
         <th class="text-center" data-sortable="true">@evalColumn.Item2</th>
       }
-      @if (Model.IsReviewStarted)
-      {
-        <th class="text-center" data-sortable="true">Phone Interview</th>
-      }
-      @if (Model.IsPhoneInterviewStarted)
-      {
-        <th class="text-center" data-sortable="true">Campus Interview</th>
-      }
     </tr>
   </thead>
   <tbody>
-    @foreach (var application in Model.Applications)
+    @foreach (var application in ViewBag.Applications)
     {
       <tr>
         <td><a href="View/@application.Id">@application.LastName, @application.FirstName</a></td>
@@ -56,25 +66,7 @@
         <td class="d-none d-lg-table-cell">@application.CurrentInstitution</td>
         @foreach (var evalColumn in ViewBag.EvalColumns)
         {
-          <td class="text-center">@((int?) application.GetEvaluation(evalColumn.Item1)?.Rating)</td>
-        }
-        @if (Model.IsReviewStarted)
-        {
-          <td class="text-center">
-            @if (application.IsAdvancedToPhoneInterview ?? false)
-            {<span class="text-success">Yes</span>}
-            @if (!(application.IsAdvancedToPhoneInterview ?? true))
-            {<span class="text-danger">No</span>}
-          </td>
-        }
-        @if (Model.IsPhoneInterviewStarted)
-        {
-          <td class="text-center">
-            @if (application.IsAdvancedToCampusInterview ?? false)
-            {<span class="text-success">Yes</span>}
-            @if (!(application.IsAdvancedToCampusInterview ?? true))
-            {<span class="text-danger">No</span>}
-          </td>
+          <td class="text-center">@((int?)application.GetEvaluation(evalColumn.Item1)?.Rating)</td>
         }
       </tr>
     }
@@ -98,5 +90,8 @@
       else if (a < b) return -1;
       else return 0;
     }
+    $(function () {
+      $("a.nav-link.@ViewBag.Page").addClass("active").attr("href", "#");
+    });
   </script>
 }
