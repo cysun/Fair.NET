@@ -49,9 +49,12 @@
       <td colspan="2"><textarea id="summernote" name="Notes" class="form-control">@Html.Raw(Model.Notes)</textarea></td>
     </tr>
     <tr>
-      <td colspan="2">
+      <td>
         <a href="../View/@Model.Id" class="btn btn-secondary">Cancel</a>
         <button class="btn btn-primary ml-2">Save</button>
+      </td>
+      <td class="text-right">
+        <button id="reset" class="btn btn-danger">Reset</button>
       </td>
     </tr>
   </table>
@@ -67,6 +70,12 @@
     $(function () {
       $("#summernote").summernote({
         height: 200
+      });
+      $("#reset").click(function (event) 
+      {
+        event.preventDefault();
+        $("input[type='radio']").prop("checked", false);
+        $("#summernote").summernote("reset");
       });
     });
   </script>
